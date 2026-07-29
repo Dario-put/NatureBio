@@ -1297,7 +1297,7 @@ class Component extends DCLogic {
       desc: 'Alta de personal, rol asignado y tiendas donde puede operar.',
       filters: [['rol', 'Rol', 'rolesOpt'], ['estado', 'Estado', ESTADO]],
       cols: [['nombre_usuario', 'Usuario', 'mono'], ['nombre', 'Nombre'], ['apellido', 'Apellido'], ['telefono', 'Teléfono'], ['correo', 'Correo'], ['rol', 'Rol', 'chip'], ['tiendas_asignadas', 'Tiendas'], ['estado', 'Estado', 'badge']],
-      fields: [['nombre', 'Nombre', 'text', 1], ['apellido', 'Apellido', 'text', 1], ['telefono', 'Teléfono', 'text', 0], ['correo', 'Correo electrónico', 'text', 0], ['nombre_usuario', 'Nombre de usuario', 'text', 1], ['password_hash', 'Contraseña', 'pass', 1], ['rol', 'Rol', 'rolesOpt', 1], ['tiendas_asignadas', 'Tiendas asignadas', 'text', 1], ['estado', 'Estado', ESTADO, 1]]
+      fields: [['nombre', 'Nombre', 'text', 1], ['apellido', 'Apellido', 'text', 1], ['telefono', 'Teléfono', 'text', 0], ['correo', 'Correo electrónico', 'text', 0], ['nombre_usuario', 'Nombre de usuario', 'text', 1], ['password_hash', 'Contraseña', 'pass', 1], ['rol', 'Rol', 'rolesOpt', 1], ['tiendas_asignadas', 'Tienda asignada', 'tiendas', 1], ['estado', 'Estado', ESTADO, 1]]
     },
     roles: {
       table: 'rol', sing: 'rol', title: 'Roles y permisos', hint: 'rol · los permisos definen qué módulos y acciones ve cada usuario',
@@ -1399,6 +1399,7 @@ class Component extends DCLogic {
   optsFor(kind) {
     const d = this.D;
     if (Array.isArray(kind)) return kind;
+    if (kind === 'rolesOpt') return d.roles.filter(r => r.estado === 'ACTIVO').map(r => r.nombre_rol);
     if (kind === 'cats') return d.categorias.map(c => c.nombre_categoria);
     if (kind === 'catsObl') return d.cat_obligacion.map(c => c.nombre_categoria);
     if (kind === 'acrs') return d.acreedores.map(a => a.nombre_razon_social);
@@ -1430,6 +1431,13 @@ class Component extends DCLogic {
       if (f[3] && !val) errs[f[0]] = 'Este campo es obligatorio.';
       else if (f[2] === 'number' && val && isNaN(Number(val.replace(',', '.')))) errs[f[0]] = 'Ingresa un número válido.';
     });
+    if (ent === 'productos') {
+      const barcode = String(form.codigo_barra || '').trim();
+      if (barcode && !/^\d+$/.test(barcode)) errs.codigo_barra = 'El código de barras solo puede contener números.';
+      if (barcode && this.D.productos.some(p => p.id !== id && String(p.codigo_barra) === barcode)) errs.codigo_barra = 'Este código de barras ya está registrado.';
+      const productCode = String(form.codigo_producto || '').trim().toLowerCase();
+      if (productCode && this.D.productos.some(p => p.id !== id && String(p.codigo_producto).trim().toLowerCase() === productCode)) errs.codigo_producto = 'Este código de producto ya está registrado.';
+    }
     if (ent === 'lotes') {
       const initial = num(form.cantidad_inicial), available = num(form.cantidad_disponible);
       if (initial <= 0) errs.cantidad_inicial = 'La cantidad inicial debe ser mayor a cero.';
@@ -1894,6 +1902,21 @@ class Component extends DCLogic {
     if (isPos) {
       const q = s.query.trim().toLowerCase();
       const lista = d.productos.filter(p => p.estado === 'ACTIVO' && (!q || (p.nombre_producto + ' ' + p.codigo_producto + ' ' + (p.codigo_barra || '') + ' ' + p.categoria).toLowerCase().includes(q)));
+      v.onQuery = e => {
+        const value = String(e.target.value || '');
+        const barcode = value.trim();
+        const exact = d.productos.find(p => p.estado === 'ACTIVO' && String(p.codigo_barra) === barcode);
+        if (exact) {
+          const available = this.stockDe(exact.nombre_producto);
+          if (!available) {
+            this.setState({ query: value });
+            return this.flash('El producto coincide, pero no tiene stock disponible en ' + s.tienda, 'warn');
+          }
+          this.setState({ query: '', sel: exact.nombre_producto, selCantidad: '1', selTipo: 'unidad', selDescuento: '0,00' });
+          return;
+        }
+        this.setState({ query: value, page: { ...s.page, [entKey]: 1 } });
+      };
       v.prodCount = lista.length;
       v.posProducts = lista.map(p => {
         const stock = this.stockDe(p.nombre_producto);
