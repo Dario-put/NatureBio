@@ -310,18 +310,27 @@
                   <input value="{{ query }}" onChange="{{ onQuery }}" placeholder="Buscar por nombre, código de producto o código de barras" style="width: 100%; height: 40px; padding: 0 12px 0 36px; border: 1px solid #DCE4D6; border-radius: 8px; background: #FAFCF8; font-size: 13px; color: #1B2A20" />
                 </label>
               </div>
-              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; padding: 14px 16px 16px">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(195px, 1fr)); gap: 10px; padding: 14px 16px 16px">
                 <sc-for list="{{ posProducts }}" as="p" hint-placeholder-count="6">
-                  <div onClick="{{ p.select }}" style="{{ p.cardStyle }}" style-hover="border-color: #A6CE39; background: #F4F9EA">
-                    <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px">
-                      <span style="font-size: 13px; font-weight: 700; color: #16301F; line-height: 1.25">{{ p.nombre_producto }}</span>
+                  <div onClick="{{ p.select }}" style="{{ p.cardStyle }}" style-hover="border-color: #A6CE39; box-shadow: 0 5px 16px rgba(31, 122, 61, .09)">
+                    <div style="position: relative; height: 154px; padding: 10px; background: #FFFFFF; border-bottom: 1px solid #EEF2EA; display: flex; align-items: center; justify-content: center">
+                      <img src="{{ p.imagenSrc }}" alt="{{ p.nombre_producto }}" style="width: 100%; height: 100%; object-fit: contain; display: block" />
                       <span style="{{ p.stockStyle }}">{{ p.stockLabel }}</span>
                     </div>
-                    <span style="font-size: 11.5px; color: #7C8C80; font-family: ui-monospace, monospace">{{ p.codigo_producto }}</span>
-                    <span style="font-size: 11.5px; color: #9AA79D">{{ p.categoria }} · vence {{ p.vence }}</span>
-                    <div style="display: flex; align-items: baseline; justify-content: space-between; padding-top: 2px">
-                      <span style="font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: #1F7A3D; font-variant-numeric: tabular-nums">Bs {{ p.precio }}</span>
-                      <span style="font-size: 11px; color: #9AA79D">mayor Bs {{ p.mayor }}</span>
+                    <div style="padding: 11px 12px 10px; display: flex; flex-direction: column; gap: 4px; min-height: 82px">
+                      <span style="font-size: 13px; font-weight: 700; color: #16301F; line-height: 1.3">{{ p.nombre_producto }}</span>
+                      <span style="font-size: 10.5px; color: #7C8C80; font-family: ui-monospace, monospace">{{ p.codigo_producto }}</span>
+                      <span style="font-size: 11px; color: #7C8C80">Vence {{ p.vence }}</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: auto">
+                      <div style="min-height: 48px; padding: 7px 9px; background: #1F7A3D; color: #FFFFFF; display: flex; flex-direction: column; justify-content: center; gap: 1px">
+                        <span style="font-size: 9.5px; opacity: .82">Por unidad</span>
+                        <strong style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-variant-numeric: tabular-nums">Bs {{ p.precio }}</strong>
+                      </div>
+                      <div style="min-height: 48px; padding: 7px 9px; background: #EAF4D3; color: #1F7A3D; display: flex; flex-direction: column; justify-content: center; gap: 1px">
+                        <span style="font-size: 9.5px">Por mayor</span>
+                        <strong style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-variant-numeric: tabular-nums">Bs {{ p.mayor }}</strong>
+                      </div>
                     </div>
                   </div>
                 </sc-for>
@@ -470,74 +479,53 @@
       </sc-if>
 
       <sc-if value="{{ showLotes }}">
-        <div style="display: grid; grid-template-columns: minmax(260px, 320px) minmax(0, 1fr); gap: 18px; align-items: start">
-          <div style="background: #FFFFFF; border: 1px solid #E3E9DE; border-radius: 16px; overflow: hidden">
-            <div style="padding: 14px 16px; border-bottom: 1px solid #EEF2EA; display: flex; flex-direction: column; gap: 2px">
-              <span style="font-size: 13.5px; font-weight: 700; color: #16301F">Productos en inventario</span>
-              <span style="font-size: 11.5px; color: #7C8C80">inventario_tienda · {{ tiendaActual }}</span>
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <div style="background: #FFFFFF; border: 1px solid #E3E9DE; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 13px">
+            <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; flex-wrap: wrap">
+              <div style="display: flex; flex-direction: column; gap: 3px">
+                <span style="font-size: 15px; font-weight: 700; color: #16301F">Productos disponibles en {{ tiendaActual }}</span>
+                <span style="font-size: 12px; color: #7C8C80">Selecciona una categoría para consultar productos, precios, existencias y lotes.</span>
+              </div>
+              <label style="display: flex; align-items: center; gap: 8px; min-width: min(100%, 310px); height: 38px; padding: 0 12px; border: 1px solid #DCE4D6; border-radius: 8px; background: #FAFCF8">
+                <span style="color: #7C8C80">⌕</span>
+                <input value="{{ query }}" onInput="{{ onQuery }}" placeholder="Buscar por nombre, código o lote" style="width: 100%; border: none; background: transparent; outline: none; font-size: 12.5px; color: #28382D" />
+              </label>
             </div>
-            <div style="max-height: 560px; overflow: auto; display: flex; flex-direction: column">
-              <sc-for list="{{ invProducts }}" as="p" hint-placeholder-count="6">
-                <div onClick="{{ p.select }}" style="{{ p.style }}">
-                  <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0">
-                    <span style="font-size: 13px; font-weight: 500; color: #16301F">{{ p.nombre_producto }}</span>
-                    <span style="font-size: 11px; color: #7C8C80; font-variant-numeric: tabular-nums">{{ p.lotesTxt }} · mín. {{ p.stock_minimo }}</span>
-                  </div>
-                  <span style="{{ p.stockStyle }}">{{ p.stock_actual }}</span>
-                </div>
+            <div style="display: flex; align-items: center; gap: 8px; overflow-x: auto; padding-bottom: 2px">
+              <sc-for list="{{ storeCategoryChips }}" as="cat" hint-placeholder-count="6">
+                <button onClick="{{ cat.select }}" style="{{ cat.style }}">{{ cat.label }} <span style="font-size: 10.5px; opacity: .75">{{ cat.count }}</span></button>
               </sc-for>
             </div>
           </div>
 
-          <div style="display: flex; flex-direction: column; gap: 14px; min-width: 0">
-            <div style="background: #FFFFFF; border: 1px solid #E3E9DE; border-radius: 16px; padding: 16px 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px">
-              <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
-                <span style="font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: #16301F">{{ invSelNombre }}</span>
-                <span style="font-size: 12.5px; color: #7C8C80">{{ invSelMeta }}</span>
+          <div style="background: #FFFFFF; border: 1px solid #E3E9DE; border-radius: 12px; overflow: hidden">
+            <div style="overflow-x: auto">
+              <div style="min-width: 1120px">
+                <div style="display: grid; grid-template-columns: 64px minmax(230px, 1.7fr) 105px 120px 120px 120px 125px 125px 76px; gap: 12px; align-items: center; padding: 10px 16px; background: #F7FAF4; border-bottom: 1px solid #E3E9DE; font-size: 10px; font-weight: 700; text-transform: uppercase; color: #7C8C80">
+                  <span>Imagen</span><span>Producto</span><span style="text-align: right">Cantidad actual</span><span style="text-align: right">Precio compra</span><span style="text-align: right">Costo por unidad</span><span style="text-align: right">Precio venta</span><span style="text-align: right">Venta por mayor</span><span>Vencimiento</span><span></span>
+                </div>
+                <sc-for list="{{ storeProductRows }}" as="p" hint-placeholder-count="7">
+                  <div style="display: grid; grid-template-columns: 64px minmax(230px, 1.7fr) 105px 120px 120px 120px 125px 125px 76px; gap: 12px; align-items: center; min-height: 76px; padding: 10px 16px; border-bottom: 1px solid #EEF2EA" style-hover="background: #FAFCF8">
+                    <img src="{{ p.imagenSrc }}" alt="{{ p.nombre }}" style="width: 50px; height: 50px; border-radius: 7px; background: #FFFFFF; border: 1px solid #E1E9D8; object-fit: contain; display: block" />
+                    <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0">
+                      <strong style="font-size: 13px; color: #16301F">{{ p.nombre }}</strong>
+                      <span style="font-size: 10.5px; color: #7C8C80">{{ p.categoria }} · {{ p.codigo }}</span>
+                      <span style="font-size: 10.5px; color: #7C8C80">Lote {{ p.lote }} · {{ p.imagen }}</span>
+                    </div>
+                    <strong style="text-align: right; font-size: 13px; color: #1F7A3D">{{ p.cantidad }}</strong>
+                    <span style="text-align: right; font-size: 12.5px; color: #28382D">{{ p.compra }}</span>
+                    <span style="text-align: right; font-size: 12.5px; color: #28382D">{{ p.costoUnidad }}</span>
+                    <strong style="text-align: right; font-size: 13px; color: #1F7A3D">{{ p.venta }}</strong>
+                    <span style="text-align: right; font-size: 12.5px; color: #55655B">{{ p.mayor }}</span>
+                    <span style="font-size: 12px; color: #55655B">{{ p.vence }}</span>
+                    <button onClick="{{ p.edit }}" style="height: 30px; padding: 0 10px; border: 1px solid #DCE4D6; border-radius: 7px; background: #FFFFFF; color: #1F7A3D; font-size: 11.5px; cursor: pointer">Editar</button>
+                  </div>
+                </sc-for>
               </div>
-              <button onClick="{{ nuevoLote }}" style="height: 38px; padding: 0 15px; border: none; border-radius: 10px; background: #1F7A3D; color: #FFFFFF; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap" style-hover="background: #2E9E4F">＋ Nuevo lote de este producto</button>
             </div>
-
-            <div style="background: #FFFFFF; border: 1px solid #E3E9DE; border-radius: 16px; overflow: hidden">
-              <div style="padding: 14px 18px; border-bottom: 1px solid #EEF2EA; display: flex; align-items: center; justify-content: space-between">
-                <span style="font-size: 13.5px; font-weight: 700; color: #16301F">Lotes registrados</span>
-                <span style="font-size: 11.5px; color: #7C8C80">lote · FIFO por fecha_vencimiento</span>
-              </div>
-              <div style="overflow: auto">
-              <table style="width: 100%; border-collapse: collapse; font-size: 12.5px">
-                <thead>
-                  <tr>
-                    <sc-for list="{{ loteCols }}" as="c" hint-placeholder-count="8">
-                      <th style="{{ c.thStyle }}">{{ c.label }}</th>
-                    </sc-for>
-                    <th style="background: #F7FAF4; text-align: right; padding: 10px 18px 10px 10px; font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase; color: #7C8C80; font-weight: 700; border-bottom: 1px solid #E3E9DE">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <sc-for list="{{ loteRows }}" as="r" hint-placeholder-count="3">
-                    <tr style="border-bottom: 1px solid #F1F4EE" style-hover="background: #FBFDF8">
-                      <sc-for list="{{ r.cells }}" as="cell" hint-placeholder-count="8">
-                        <td style="{{ cell.tdStyle }}"><span style="{{ cell.style }}">{{ cell.v }}</span></td>
-                      </sc-for>
-                      <td style="padding: 11px 18px 11px 10px; text-align: right; white-space: nowrap">
-                        <div style="display: inline-flex; gap: 6px">
-                          <button onClick="{{ r.edit }}" style="height: 28px; padding: 0 11px; border: 1px solid #DCE4D6; border-radius: 8px; background: #FFFFFF; color: #1F7A3D; font-size: 12px; cursor: pointer" style-hover="border-color: #A6CE39; background: #F4F9EA">Editar</button>
-                          <button onClick="{{ r.remove }}" style="height: 28px; padding: 0 11px; border: 1px solid #F6DADA; border-radius: 8px; background: #FFFFFF; color: #E12A2A; font-size: 12px; cursor: pointer" style-hover="background: #FDECEC">Eliminar</button>
-                        </div>
-                      </td>
-                    </tr>
-                  </sc-for>
-                </tbody>
-              </table>
-              </div>
-              <sc-if value="{{ noLotes }}">
-                <div style="padding: 30px; text-align: center; font-size: 12.5px; color: #9AA79D">Este producto todavía no tiene lotes registrados en la tienda.</div>
-              </sc-if>
-            </div>
-          </div>
+          </div>          <sc-if value="{{ noStoreProducts }}"><div style="padding: 44px 20px; border: 1px dashed #DCE4D6; border-radius: 12px; background: #FFFFFF; text-align: center; color: #7C8C80">No hay productos para esta categoría o búsqueda.</div></sc-if>
         </div>
       </sc-if>
-
       <sc-if value="{{ showInicio }}">
         <div style="display: flex; flex-direction: column; gap: 16px">
           <div style="display: flex; align-items: flex-end; justify-content: flex-end; gap: 16px; flex-wrap: wrap">
@@ -658,7 +646,7 @@
               <sc-for list="{{ debtRows }}" as="r" hint-placeholder-count="4">
                 <div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 13px 17px; border-bottom: 1px solid #F1F4EE">
                   <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0"><span style="font-size: 12.5px; font-weight: 700; color: #16301F">{{ r.obligacion }}</span><span style="font-size: 11.5px; color: #7C8C80">{{ r.categoria }} · {{ r.acreedor }}</span><span style="font-size: 11px; color: #9A6B00">Vence {{ r.vence }}</span></div>
-                  <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 3px"><span style="font-size: 13px; font-weight: 700; color: #16301F">Saldo {{ r.saldo }}</span><span style="font-size: 11px; color: #7C8C80">Pagado {{ r.pagado }} de {{ r.total }}</span><div style="display: flex; align-items: center; gap: 7px"><span style="{{ r.badgeStyle }}">{{ r.estado }}</span><button onClick="{{ r.pay }}" style="height: 28px; padding: 0 10px; border: none; border-radius: 7px; background: #1F7A3D; color: #FFFFFF; cursor: pointer; font-size: 11.5px; font-weight: 700">Pagar</button></div></div>
+                  <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 3px"><span style="font-size: 13px; font-weight: 700; color: #16301F">Saldo {{ r.saldo }}</span><span style="font-size: 11px; color: #7C8C80">{{ r.paymentDetail }}</span><div style="display: flex; align-items: center; gap: 7px"><span style="{{ r.badgeStyle }}">{{ r.estado }}</span><button onClick="{{ r.pay }}" style="height: 28px; padding: 0 10px; border: none; border-radius: 7px; background: #1F7A3D; color: #FFFFFF; cursor: pointer; font-size: 11.5px; font-weight: 700">{{ r.actionLabel }}</button></div></div>
                 </div>
               </sc-for>
             </div>
@@ -1039,7 +1027,7 @@ const TONE = {
 const ESTADO = ['ACTIVO', 'INACTIVO'];
 const FORMAS = ['Efectivo', 'QR Simple', 'Transferencia', 'Tarjeta'];
 const USUARIOS = ['prueba123', 'M. Gutiérrez', 'A. Peña'];
-const HOY = '2026-07-24';
+const HOY = '2026-07-29';
 
 class Component extends DCLogic {
   SEED = {
@@ -1054,13 +1042,10 @@ class Component extends DCLogic {
         { id: 3, tienda: 'Tienda 2 · Sucursal Centro', codigo_caja: 'CAJA-03', nombre_caja: 'Caja principal', fecha_registro: '2025-09-01', estado: 'ACTIVO' }
       ],
       movimientos: [
-        { id: 1, fecha_hora: '24/07/2026 08:15', tipo_movimiento: 'APERTURA', concepto: 'Apertura de caja CAJA-01', monto: 300, usuario: 'prueba123', referencia: 'SES-0088', estado: 'REGISTRADO' },
-        { id: 2, fecha_hora: '24/07/2026 08:47', tipo_movimiento: 'INGRESO_VENTA', concepto: 'Venta V-000317 (transferencia)', monto: 0, usuario: 'prueba123', referencia: 'V-000317', estado: 'REGISTRADO' },
-        { id: 3, fecha_hora: '24/07/2026 09:12', tipo_movimiento: 'INGRESO_VENTA', concepto: 'Venta V-000318 (efectivo)', monto: 100, usuario: 'prueba123', referencia: 'V-000318', estado: 'REGISTRADO' },
-        { id: 4, fecha_hora: '24/07/2026 09:40', tipo_movimiento: 'EGRESO', concepto: 'Compra de bolsas biodegradables', monto: -45, usuario: 'prueba123', referencia: 'REC-1182', estado: 'REGISTRADO' },
-        { id: 5, fecha_hora: '24/07/2026 10:02', tipo_movimiento: 'RESERVA_OBLIGACION', concepto: 'Reserva diaria alquiler', monto: -140, usuario: 'prueba123', referencia: 'APO-0231', estado: 'REGISTRADO' }
-      ],
-      usuarios: [
+        { id: 1, fecha_hora: '28/07/2026 08:15', tipo_movimiento: 'APERTURA', concepto: 'Apertura de caja CAJA-01', monto: 300, usuario: 'prueba123', referencia: 'SES-0088', estado: 'REGISTRADO' },
+        { id: 2, fecha_hora: '28/07/2026 09:40', tipo_movimiento: 'EGRESO', concepto: 'Compra de bolsas biodegradables', monto: -45, usuario: 'prueba123', referencia: 'REC-1182', estado: 'REGISTRADO' },
+        { id: 3, fecha_hora: '28/07/2026 10:02', tipo_movimiento: 'RESERVA_OBLIGACION', concepto: 'Reserva para obligaciones del mes', monto: -140, usuario: 'prueba123', referencia: 'APO-0231', estado: 'REGISTRADO' }
+      ],      usuarios: [
         { id: 1, nombre: 'Prueba', apellido: 'Demo', telefono: '+591 700-00000', correo: 'prueba@bionature.bo', nombre_usuario: 'prueba123', password_hash: '••••••••', rol: 'Cajero', tiendas_asignadas: 'Tienda 1', estado: 'ACTIVO' },
         { id: 2, nombre: 'Mariana', apellido: 'Gutiérrez', telefono: '+591 700-11223', correo: 'mariana@bionature.bo', nombre_usuario: 'mgutierrez', password_hash: '••••••••', rol: 'Cajero', tiendas_asignadas: 'Tienda 1, Tienda 2', estado: 'ACTIVO' },
         { id: 3, nombre: 'Andrea', apellido: 'Peña', telefono: '+591 700-33445', correo: 'apena@bionature.bo', nombre_usuario: 'apena', password_hash: '••••••••', rol: 'Administrador', tiendas_asignadas: 'Todas', estado: 'ACTIVO' },
@@ -1076,114 +1061,89 @@ class Component extends DCLogic {
         { id: 2, nombre_razon_social: 'Farmacia Vida', nit_ci: '1023456', telefono: '+591 333-1122', direccion: 'Av. Alemana #820', estado: 'ACTIVO' },
         { id: 3, nombre_razon_social: 'Tienda El Sol', nit_ci: '884120', telefono: '+591 700-88990', direccion: 'C. Los Tajibos #14', estado: 'ACTIVO' }
       ],
-      aportes: [
-        { id: 1, cuota: 'Alquiler local Tienda 1 · jul/2026', tienda: 'Tienda 1 · Sucursal Norte', usuario: 'prueba123', sesion_caja: 'CAJA-01 24/07', movimiento_caja: 'MOV-0464', fecha_hora: '2026-07-24 12:00', monto: 140, observacion: 'Reserva diaria', estado: 'REGISTRADO' },
-        { id: 2, cuota: 'Alquiler local Tienda 1 · jul/2026', tienda: 'Tienda 1 · Sucursal Norte', usuario: 'prueba123', sesion_caja: 'CAJA-01 23/07', movimiento_caja: 'MOV-0461', fecha_hora: '2026-07-23 12:00', monto: 140, observacion: 'Reserva diaria', estado: 'REGISTRADO' },
-        { id: 3, cuota: 'IVA mensual · jun/2026', tienda: 'Tienda 1 · Sucursal Norte', usuario: 'A. Peña', sesion_caja: '', movimiento_caja: '', fecha_hora: '2026-07-23 16:20', monto: 60, observacion: 'Provisión impuesto', estado: 'REGISTRADO' },
-        { id: 4, cuota: 'Alquiler local Tienda 1 · jul/2026', tienda: 'Tienda 1 · Sucursal Norte', usuario: 'M. Gutiérrez', sesion_caja: 'CAJA-01 22/07', movimiento_caja: 'MOV-0458', fecha_hora: '2026-07-22 12:00', monto: 140, observacion: '', estado: 'REGISTRADO' }
-      ],
-      ventas_dia: [
-        { dia: 'Vie 18', monto: 1240 }, { dia: 'Sáb 19', monto: 1980 }, { dia: 'Dom 20', monto: 640 },
-        { dia: 'Lun 21', monto: 1420 }, { dia: 'Mar 22', monto: 1105 }, { dia: 'Mié 23', monto: 1291 }, { dia: 'Jue 24', monto: 1060 }
-      ],
-      top_productos: [
-        { producto: 'Moringa en cápsulas 500mg', unidades: 34, monto: 1870 },
-        { producto: 'Jabón de caléndula 100g', unidades: 28, monto: 504 },
-        { producto: 'Té de cola de caballo 20u', unidades: 22, monto: 550 },
-        { producto: 'Quinua real perlada 1kg', unidades: 14, monto: 588 },
-        { producto: 'Miel de abeja pura 500g', unidades: 9, monto: 522 }
-      ],
+      aportes: [],      ventas_dia: [],
+      top_productos: [],
       categorias: [
-        { id: 1, nombre_categoria: 'Suplementos', descripcion: 'Cápsulas, polvos y tinturas', estado: 'ACTIVO' },
-        { id: 2, nombre_categoria: 'Infusiones', descripcion: 'Tés e infusiones medicinales', estado: 'ACTIVO' },
-        { id: 3, nombre_categoria: 'Cuidado personal', descripcion: 'Jabones y cremas naturales', estado: 'ACTIVO' },
-        { id: 4, nombre_categoria: 'Alimentos secos', descripcion: 'Granos, semillas y harinas', estado: 'ACTIVO' },
-        { id: 5, nombre_categoria: 'Aceites esenciales', descripcion: 'Extractos y aceites', estado: 'ACTIVO' }
+        { id: 1, nombre_categoria: 'Cápsulas peruanas', descripcion: 'Suplementos naturales en cápsulas y tabletas', estado: 'ACTIVO' },
+        { id: 2, nombre_categoria: 'Colágenos peruanos', descripcion: 'Colágenos, minerales y suplementos en polvo', estado: 'ACTIVO' },
+        { id: 3, nombre_categoria: 'Hierbas y polvos en sobres', descripcion: 'Hierbas secas y productos naturales en polvo', estado: 'ACTIVO' }
       ],
       productos: [
-        { id: 1, nombre_producto: 'Moringa en cápsulas 500mg', codigo_producto: 'BN-MOR-500', codigo_barra: '7771001000018', categoria: 'Suplementos', descripcion: 'Frasco 60 cápsulas', imagen: 'moringa.jpg', estado: 'ACTIVO' },
-        { id: 2, nombre_producto: 'Té de cola de caballo 20u', codigo_producto: 'BN-TE-COLA', codigo_barra: '7771001000025', categoria: 'Infusiones', descripcion: 'Caja 20 sobres', imagen: 'te-cola.jpg', estado: 'ACTIVO' },
-        { id: 3, nombre_producto: 'Jabón de caléndula 100g', codigo_producto: 'BN-JAB-CAL', codigo_barra: '7771001000032', categoria: 'Cuidado personal', descripcion: 'Barra artesanal', imagen: 'jabon.jpg', estado: 'ACTIVO' },
-        { id: 4, nombre_producto: 'Quinua real perlada 1kg', codigo_producto: 'BN-QUI-1000', codigo_barra: '7771001000049', categoria: 'Alimentos secos', descripcion: 'Bolsa sellada 1 kg', imagen: 'quinua.jpg', estado: 'ACTIVO' },
-        { id: 5, nombre_producto: 'Aceite de eucalipto 30ml', codigo_producto: 'BN-ACE-EUC', codigo_barra: '7771001000056', categoria: 'Aceites esenciales', descripcion: 'Gotero ámbar', imagen: 'eucalipto.jpg', estado: 'ACTIVO' },
-        { id: 6, nombre_producto: 'Miel de abeja pura 500g', codigo_producto: 'BN-MIE-500', codigo_barra: '7771001000063', categoria: 'Alimentos secos', descripcion: 'Frasco de vidrio', imagen: 'miel.jpg', estado: 'ACTIVO' }
+        { id: 1, nombre_producto: 'Bio Prost Ecuador 30 tabletas', codigo_producto: 'CAP-001', codigo_barra: '7751000100011', categoria: 'Cápsulas peruanas', descripcion: 'Fórmula natural para hombres con uña de gato', imagen: 'uploads/Capsulas peruanas1.jpeg', estado: 'ACTIVO' },
+        { id: 2, nombre_producto: 'Bio Prost USA 30 tabletas', codigo_producto: 'CAP-002', codigo_barra: '7751000100028', categoria: 'Cápsulas peruanas', descripcion: 'Suplemento natural masculino, presentación USA', imagen: 'uploads/Capsulas peruanas2.jpeg', estado: 'ACTIVO' },
+        { id: 3, nombre_producto: 'Biodora NAD+ Resveratrol 60 tabletas', codigo_producto: 'CAP-003', codigo_barra: '7751000100035', categoria: 'Cápsulas peruanas', descripcion: 'Complejo NAD+ con resveratrol 1600 mg', imagen: 'uploads/Capsulas peruanas3.jpeg', estado: 'ACTIVO' },
+        { id: 4, nombre_producto: 'Cloruro de calcio con colágeno 500g', codigo_producto: 'COL-001', codigo_barra: '7752000200015', categoria: 'Colágenos peruanos', descripcion: 'Cloruro de calcio y colágeno hidrolizado', imagen: 'uploads/Colágenos peruanos1.jpeg', estado: 'ACTIVO' },
+        { id: 5, nombre_producto: 'Colágeno hidrolizado con glucosamina 1kg', codigo_producto: 'COL-002', codigo_barra: '7752000200022', categoria: 'Colágenos peruanos', descripcion: 'Con zinc, calcio y camu camu', imagen: 'uploads/Colágenos peruanos2.jpeg', estado: 'ACTIVO' },
+        { id: 6, nombre_producto: 'Colágeno hidrolizado con biotina 1kg', codigo_producto: 'COL-003', codigo_barra: '7752000200039', categoria: 'Colágenos peruanos', descripcion: 'Suplemento alimenticio con biotina', imagen: 'uploads/Colágenos peruanos3.jpeg', estado: 'ACTIVO' },
+        { id: 7, nombre_producto: 'Cloruro de calcio con colágeno 1kg', codigo_producto: 'COL-004', codigo_barra: '7752000200046', categoria: 'Colágenos peruanos', descripcion: 'Presentación familiar de colágeno hidrolizado', imagen: 'uploads/Colágenos peruanos4.jpeg', estado: 'ACTIVO' },
+        { id: 8, nombre_producto: 'Hojas de arrayán 100g', codigo_producto: 'HIE-001', codigo_barra: '7753000300019', categoria: 'Hierbas y polvos en sobres', descripcion: 'Hojas secas naturales en sobre', imagen: 'uploads/Hiervas en Polvos en sobres1.jpeg', estado: 'ACTIVO' },
+        { id: 9, nombre_producto: 'Hojas de boldo 100g', codigo_producto: 'HIE-002', codigo_barra: '7753000300026', categoria: 'Hierbas y polvos en sobres', descripcion: 'Hojas de boldo para infusión', imagen: 'uploads/Hiervas en Polvos en sobres2.jpeg', estado: 'ACTIVO' },
+        { id: 10, nombre_producto: 'Camu camu en polvo 100g', codigo_producto: 'HIE-003', codigo_barra: '7753000300033', categoria: 'Hierbas y polvos en sobres', descripcion: 'Camu camu natural pulverizado', imagen: 'uploads/Hiervas en Polvos en sobres3.jpeg', estado: 'ACTIVO' }
       ],
       lotes: [
-        { id: 1, numero_lote: 'L-2026-0147', producto: 'Moringa en cápsulas 500mg', tienda: 'Tienda 1 · Sucursal Norte', fecha_registro: '2026-04-02', fecha_vencimiento: '2027-03-18', cantidad_inicial: 120, cantidad_disponible: 86, costo_total: 3600, costo_unitario: 30, precio_venta_unidad: 55, precio_venta_mayor: 47, estado: 'ACTIVO' },
-        { id: 2, numero_lote: 'L-2026-0151', producto: 'Té de cola de caballo 20u', tienda: 'Tienda 1 · Sucursal Norte', fecha_registro: '2026-05-11', fecha_vencimiento: '2026-09-02', cantidad_inicial: 200, cantidad_disponible: 44, costo_total: 2400, costo_unitario: 12, precio_venta_unidad: 25, precio_venta_mayor: 20, estado: 'ACTIVO' },
-        { id: 3, numero_lote: 'L-2026-0158', producto: 'Jabón de caléndula 100g', tienda: 'Tienda 1 · Sucursal Norte', fecha_registro: '2026-06-01', fecha_vencimiento: '2028-01-30', cantidad_inicial: 300, cantidad_disponible: 262, costo_total: 2700, costo_unitario: 9, precio_venta_unidad: 18, precio_venta_mayor: 15, estado: 'ACTIVO' },
-        { id: 4, numero_lote: 'L-2026-0160', producto: 'Quinua real perlada 1kg', tienda: 'Tienda 1 · Sucursal Norte', fecha_registro: '2026-06-14', fecha_vencimiento: '2027-06-15', cantidad_inicial: 90, cantidad_disponible: 31, costo_total: 2250, costo_unitario: 25, precio_venta_unidad: 42, precio_venta_mayor: 36, estado: 'ACTIVO' },
-        { id: 5, numero_lote: 'L-2026-0163', producto: 'Aceite de eucalipto 30ml', tienda: 'Tienda 1 · Sucursal Norte', fecha_registro: '2026-06-28', fecha_vencimiento: '2026-08-08', cantidad_inicial: 60, cantidad_disponible: 12, costo_total: 1080, costo_unitario: 18, precio_venta_unidad: 38, precio_venta_mayor: 32, estado: 'ACTIVO' },
-        { id: 6, numero_lote: 'L-2026-0170', producto: 'Moringa en cápsulas 500mg', tienda: 'Tienda 1 · Sucursal Norte', fecha_registro: '2026-07-05', fecha_vencimiento: '2027-09-30', cantidad_inicial: 60, cantidad_disponible: 60, costo_total: 1860, costo_unitario: 31, precio_venta_unidad: 56, precio_venta_mayor: 48, estado: 'ACTIVO' },
-        { id: 7, numero_lote: 'L-2026-0172', producto: 'Miel de abeja pura 500g', tienda: 'Tienda 1 · Sucursal Norte', fecha_registro: '2026-07-12', fecha_vencimiento: '2027-07-12', cantidad_inicial: 48, cantidad_disponible: 39, costo_total: 1440, costo_unitario: 30, precio_venta_unidad: 58, precio_venta_mayor: 50, estado: 'ACTIVO' }
+        { id: 1, numero_lote: 'CAP-001-0726', producto: 'Bio Prost Ecuador 30 tabletas', tienda: 'Tienda 1 · Sucursal Norte', fecha_registro: '2026-07-10', fecha_vencimiento: '2027-08-30', cantidad_inicial: 20, cantidad_disponible: 20, costo_total: 1000, costo_unitario: 50, precio_venta_unidad: 80, precio_venta_mayor: 70, estado: 'ACTIVO' },
+        { id: 2, numero_lote: 'CAP-002-0726', producto: 'Bio Prost USA 30 tabletas', tienda: 'Tienda 1 · Sucursal Norte', fecha_registro: '2026-07-10', fecha_vencimiento: '2027-09-15', cantidad_inicial: 10, cantidad_disponible: 10, costo_total: 520, costo_unitario: 52, precio_venta_unidad: 85, precio_venta_mayor: 74, estado: 'ACTIVO' },
+        { id: 3, numero_lote: 'CAP-003-0726', producto: 'Biodora NAD+ Resveratrol 60 tabletas', tienda: 'Tienda 1 · Sucursal Norte', fecha_registro: '2026-07-11', fecha_vencimiento: '2027-11-20', cantidad_inicial: 20, cantidad_disponible: 20, costo_total: 1800, costo_unitario: 90, precio_venta_unidad: 140, precio_venta_mayor: 125, estado: 'ACTIVO' },
+        { id: 4, numero_lote: 'COL-001-0726', producto: 'Cloruro de calcio con colágeno 500g', tienda: 'Tienda 1 · Sucursal Norte', fecha_registro: '2026-07-12', fecha_vencimiento: '2027-06-30', cantidad_inicial: 10, cantidad_disponible: 10, costo_total: 300, costo_unitario: 30, precio_venta_unidad: 48, precio_venta_mayor: 42, estado: 'ACTIVO' },
+        { id: 5, numero_lote: 'COL-002-0726', producto: 'Colágeno hidrolizado con glucosamina 1kg', tienda: 'Tienda 1 · Sucursal Norte', fecha_registro: '2026-07-12', fecha_vencimiento: '2027-10-18', cantidad_inicial: 20, cantidad_disponible: 20, costo_total: 1440, costo_unitario: 72, precio_venta_unidad: 110, precio_venta_mayor: 98, estado: 'ACTIVO' },
+        { id: 6, numero_lote: 'COL-003-0726', producto: 'Colágeno hidrolizado con biotina 1kg', tienda: 'Tienda 1 · Sucursal Norte', fecha_registro: '2026-07-13', fecha_vencimiento: '2027-12-05', cantidad_inicial: 10, cantidad_disponible: 10, costo_total: 680, costo_unitario: 68, precio_venta_unidad: 105, precio_venta_mayor: 94, estado: 'ACTIVO' },
+        { id: 7, numero_lote: 'COL-004-0726', producto: 'Cloruro de calcio con colágeno 1kg', tienda: 'Tienda 1 · Sucursal Norte', fecha_registro: '2026-07-13', fecha_vencimiento: '2027-07-25', cantidad_inicial: 20, cantidad_disponible: 20, costo_total: 560, costo_unitario: 28, precio_venta_unidad: 45, precio_venta_mayor: 39, estado: 'ACTIVO' },
+        { id: 8, numero_lote: 'HIE-001-0726', producto: 'Hojas de arrayán 100g', tienda: 'Tienda 1 · Sucursal Norte', fecha_registro: '2026-07-14', fecha_vencimiento: '2027-04-12', cantidad_inicial: 10, cantidad_disponible: 10, costo_total: 180, costo_unitario: 18, precio_venta_unidad: 32, precio_venta_mayor: 27, estado: 'ACTIVO' },
+        { id: 9, numero_lote: 'HIE-002-0726', producto: 'Hojas de boldo 100g', tienda: 'Tienda 1 · Sucursal Norte', fecha_registro: '2026-07-14', fecha_vencimiento: '2026-08-06', cantidad_inicial: 20, cantidad_disponible: 20, costo_total: 300, costo_unitario: 15, precio_venta_unidad: 28, precio_venta_mayor: 24, estado: 'ACTIVO' },
+        { id: 10, numero_lote: 'HIE-003-0726', producto: 'Camu camu en polvo 100g', tienda: 'Tienda 1 · Sucursal Norte', fecha_registro: '2026-07-15', fecha_vencimiento: '2027-05-28', cantidad_inicial: 10, cantidad_disponible: 10, costo_total: 260, costo_unitario: 26, precio_venta_unidad: 45, precio_venta_mayor: 39, estado: 'ACTIVO' }
       ],
       inventario: [
-        { id: 1, tienda: 'Tienda 1 · Sucursal Norte', producto: 'Moringa en cápsulas 500mg', stock_minimo: 24, estado: 'ACTIVO' },
-        { id: 2, tienda: 'Tienda 1 · Sucursal Norte', producto: 'Té de cola de caballo 20u', stock_minimo: 40, estado: 'ACTIVO' },
-        { id: 3, tienda: 'Tienda 1 · Sucursal Norte', producto: 'Jabón de caléndula 100g', stock_minimo: 60, estado: 'ACTIVO' },
-        { id: 4, tienda: 'Tienda 1 · Sucursal Norte', producto: 'Quinua real perlada 1kg', stock_minimo: 35, estado: 'ACTIVO' },
-        { id: 5, tienda: 'Tienda 1 · Sucursal Norte', producto: 'Aceite de eucalipto 30ml', stock_minimo: 20, estado: 'ACTIVO' },
-        { id: 6, tienda: 'Tienda 1 · Sucursal Norte', producto: 'Miel de abeja pura 500g', stock_minimo: 12, estado: 'ACTIVO' }
+        { id: 1, tienda: 'Tienda 1 · Sucursal Norte', producto: 'Bio Prost Ecuador 30 tabletas', stock_minimo: 5, estado: 'ACTIVO' },
+        { id: 2, tienda: 'Tienda 1 · Sucursal Norte', producto: 'Bio Prost USA 30 tabletas', stock_minimo: 5, estado: 'ACTIVO' },
+        { id: 3, tienda: 'Tienda 1 · Sucursal Norte', producto: 'Biodora NAD+ Resveratrol 60 tabletas', stock_minimo: 6, estado: 'ACTIVO' },
+        { id: 4, tienda: 'Tienda 1 · Sucursal Norte', producto: 'Cloruro de calcio con colágeno 500g', stock_minimo: 4, estado: 'ACTIVO' },
+        { id: 5, tienda: 'Tienda 1 · Sucursal Norte', producto: 'Colágeno hidrolizado con glucosamina 1kg', stock_minimo: 6, estado: 'ACTIVO' },
+        { id: 6, tienda: 'Tienda 1 · Sucursal Norte', producto: 'Colágeno hidrolizado con biotina 1kg', stock_minimo: 4, estado: 'ACTIVO' },
+        { id: 7, tienda: 'Tienda 1 · Sucursal Norte', producto: 'Cloruro de calcio con colágeno 1kg', stock_minimo: 6, estado: 'ACTIVO' },
+        { id: 8, tienda: 'Tienda 1 · Sucursal Norte', producto: 'Hojas de arrayán 100g', stock_minimo: 4, estado: 'ACTIVO' },
+        { id: 9, tienda: 'Tienda 1 · Sucursal Norte', producto: 'Hojas de boldo 100g', stock_minimo: 5, estado: 'ACTIVO' },
+        { id: 10, tienda: 'Tienda 1 · Sucursal Norte', producto: 'Camu camu en polvo 100g', stock_minimo: 4, estado: 'ACTIVO' }
       ],
-      ventas: [
-        { id: 1, numero_venta: 'V-000318', fecha_hora: '24/07/2026 09:12', cliente: 'Consumidor final', usuario: 'prueba123', subtotal: 165, descuento_total: 5, total: 160, estado: 'REGISTRADA' },
-        { id: 2, numero_venta: 'V-000317', fecha_hora: '24/07/2026 08:47', cliente: 'Farmacia Vida (1023456)', usuario: 'prueba123', subtotal: 940, descuento_total: 40, total: 900, estado: 'REGISTRADA' },
-        { id: 3, numero_venta: 'V-000316', fecha_hora: '23/07/2026 19:05', cliente: 'Consumidor final', usuario: 'M. Gutiérrez', subtotal: 76, descuento_total: 0, total: 76, estado: 'REGISTRADA' },
-        { id: 4, numero_venta: 'V-000315', fecha_hora: '23/07/2026 17:38', cliente: 'Tienda El Sol (884120)', usuario: 'M. Gutiérrez', subtotal: 615, descuento_total: 15, total: 600, estado: 'ANULADA' }
-      ],
-      pagos_venta: [
-        { id: 1, venta: 'V-000318', forma_pago: 'Efectivo', monto: 100, referencia: '', afecta_efectivo: 'SÍ' },
-        { id: 2, venta: 'V-000318', forma_pago: 'QR Simple', monto: 60, referencia: 'QR-77120', afecta_efectivo: 'NO' },
-        { id: 3, venta: 'V-000317', forma_pago: 'Transferencia', monto: 900, referencia: 'BNB-448215', afecta_efectivo: 'NO' },
-        { id: 4, venta: 'V-000316', forma_pago: 'Efectivo', monto: 76, referencia: '', afecta_efectivo: 'SÍ' }
-      ],
+      ventas: [],
+      pagos_venta: [],
       cat_obligacion: [
-        { id: 1, nombre_categoria: 'Alquileres', tipo_contable: 'GASTO_OPERATIVO', descripcion: 'Alquiler de locales comerciales', estado: 'ACTIVO' },
-        { id: 2, nombre_categoria: 'Servicios básicos', tipo_contable: 'GASTO_OPERATIVO', descripcion: 'Luz, agua, internet', estado: 'ACTIVO' },
-        { id: 3, nombre_categoria: 'Préstamos bancarios', tipo_contable: 'DEUDA_FINANCIERA', descripcion: 'Cuotas de crédito', estado: 'ACTIVO' },
-        { id: 4, nombre_categoria: 'Impuestos', tipo_contable: 'IMPUESTO', descripcion: 'IVA, IT y otros', estado: 'ACTIVO' },
-        { id: 5, nombre_categoria: 'Comisiones', tipo_contable: 'OTRO', descripcion: 'Plataformas de delivery', estado: 'ACTIVO' }
+        { id: 1, nombre_categoria: 'Alquileres', tipo_contable: 'GASTO_OPERATIVO', descripcion: 'Alquiler mensual del local', estado: 'ACTIVO' },
+        { id: 2, nombre_categoria: 'Servicios básicos', tipo_contable: 'GASTO_OPERATIVO', descripcion: 'Luz y agua con monto variable', estado: 'ACTIVO' },
+        { id: 3, nombre_categoria: 'Préstamos bancarios', tipo_contable: 'DEUDA_FINANCIERA', descripcion: 'Cuotas de crédito bancario', estado: 'ACTIVO' },
+        { id: 4, nombre_categoria: 'Sueldos', tipo_contable: 'GASTO_OPERATIVO', descripcion: 'Remuneraciones mensuales del personal', estado: 'ACTIVO' },
+        { id: 5, nombre_categoria: 'Publicidad', tipo_contable: 'GASTO_OPERATIVO', descripcion: 'Campañas y plataformas publicitarias', estado: 'ACTIVO' }
+      ],      acreedores: [
+        { id: 1, nombre_razon_social: 'Propietario del local', tipo_acreedor: 'ARRENDADOR', nit_ci: '', telefono: '', descripcion: 'Alquiler de Tienda 1', estado: 'ACTIVO' },
+        { id: 2, nombre_razon_social: 'Banco Unión S.A.', tipo_acreedor: 'BANCO', nit_ci: '1020304050', telefono: '+591 800-10-2000', descripcion: 'Crédito del negocio', estado: 'ACTIVO' },
+        { id: 3, nombre_razon_social: 'CRE Ltda.', tipo_acreedor: 'SERVICIO', nit_ci: '1009887766', telefono: '+591 333-7777', descripcion: 'Servicio de energía eléctrica', estado: 'ACTIVO' },
+        { id: 4, nombre_razon_social: 'SAGUAPAC', tipo_acreedor: 'SERVICIO', nit_ci: '', telefono: '+591 336-6688', descripcion: 'Servicio de agua potable', estado: 'ACTIVO' },
+        { id: 5, nombre_razon_social: 'Personal de caja', tipo_acreedor: 'EMPLEADO', nit_ci: '', telefono: '', descripcion: 'Sueldo mensual del cajero', estado: 'ACTIVO' },
+        { id: 6, nombre_razon_social: 'Meta Platforms', tipo_acreedor: 'PLATAFORMA', nit_ci: '', telefono: '', descripcion: 'Publicidad de Meta Ads', estado: 'ACTIVO' }
+      ],      obligaciones: [
+        { id: 1, nombre_obligacion: 'Alquiler del local', categoria_obligacion: 'Alquileres', acreedor: 'Propietario del local', tienda: 'Tienda 1 · Sucursal Norte', usuario_registro: 'prueba123', tipo_monto: 'FIJO', monto_referencia: 1500, periodicidad: 'MENSUAL', dia_vencimiento: 5, fecha_inicio: '2026-01-01', fecha_fin: '', descripcion: 'Alquiler mensual de Tienda 1', estado: 'ACTIVA' },
+        { id: 2, nombre_obligacion: 'Deuda con el banco', categoria_obligacion: 'Préstamos bancarios', acreedor: 'Banco Unión S.A.', tienda: 'Tienda 1 · Sucursal Norte', usuario_registro: 'prueba123', tipo_monto: 'FIJO', monto_referencia: 1800, periodicidad: 'MENSUAL', dia_vencimiento: 30, fecha_inicio: '2026-01-01', fecha_fin: '', descripcion: 'Cuota mensual del crédito bancario', estado: 'ACTIVA' },
+        { id: 3, nombre_obligacion: 'Servicio de luz', categoria_obligacion: 'Servicios básicos', acreedor: 'CRE Ltda.', tienda: 'Tienda 1 · Sucursal Norte', usuario_registro: 'prueba123', tipo_monto: 'VARIABLE', monto_referencia: 0, periodicidad: 'MENSUAL', dia_vencimiento: 20, fecha_inicio: '2026-01-01', fecha_fin: '', descripcion: 'El usuario debe registrar el importe de la factura del mes', estado: 'ACTIVA' },
+        { id: 4, nombre_obligacion: 'Servicio de agua', categoria_obligacion: 'Servicios básicos', acreedor: 'SAGUAPAC', tienda: 'Tienda 1 · Sucursal Norte', usuario_registro: 'prueba123', tipo_monto: 'VARIABLE', monto_referencia: 0, periodicidad: 'MENSUAL', dia_vencimiento: 22, fecha_inicio: '2026-01-01', fecha_fin: '', descripcion: 'El usuario debe registrar el importe de la factura del mes', estado: 'ACTIVA' },
+        { id: 5, nombre_obligacion: 'Sueldo de cajero', categoria_obligacion: 'Sueldos', acreedor: 'Personal de caja', tienda: 'Tienda 1 · Sucursal Norte', usuario_registro: 'prueba123', tipo_monto: 'FIJO', monto_referencia: 2000, periodicidad: 'MENSUAL', dia_vencimiento: 31, fecha_inicio: '2026-01-01', fecha_fin: '', descripcion: 'Sueldo mensual del cajero', estado: 'ACTIVA' },
+        { id: 6, nombre_obligacion: 'Meta Ads', categoria_obligacion: 'Publicidad', acreedor: 'Meta Platforms', tienda: 'Tienda 1 · Sucursal Norte', usuario_registro: 'prueba123', tipo_monto: 'FIJO', monto_referencia: 1000, periodicidad: 'MENSUAL', dia_vencimiento: 31, fecha_inicio: '2026-01-01', fecha_fin: '', descripcion: 'Presupuesto mensual de publicidad', estado: 'ACTIVA' }
+      ],      cuotas: [
+        { id: 1, obligacion: 'Alquiler del local', periodo_desde: '2026-07-01', periodo_hasta: '2026-07-31', fecha_emision: '2026-07-01', fecha_vencimiento: '2026-08-05', monto_presupuestado: 1500, monto_real: 1500, estado: 'PENDIENTE', observacion: '' },
+        { id: 2, obligacion: 'Deuda con el banco', periodo_desde: '2026-07-01', periodo_hasta: '2026-07-31', fecha_emision: '2026-07-01', fecha_vencimiento: '2026-07-30', monto_presupuestado: 1800, monto_real: 1800, estado: 'PENDIENTE', observacion: '' },
+        { id: 3, obligacion: 'Sueldo de cajero', periodo_desde: '2026-07-01', periodo_hasta: '2026-07-31', fecha_emision: '2026-07-01', fecha_vencimiento: '2026-07-31', monto_presupuestado: 2000, monto_real: 2000, estado: 'PENDIENTE', observacion: '' },
+        { id: 4, obligacion: 'Meta Ads', periodo_desde: '2026-07-01', periodo_hasta: '2026-07-31', fecha_emision: '2026-07-01', fecha_vencimiento: '2026-07-31', monto_presupuestado: 1000, monto_real: 1000, estado: 'PENDIENTE', observacion: '' }
       ],
-      acreedores: [
-        { id: 1, nombre_razon_social: 'Inmob. San Jorge S.R.L.', tipo_acreedor: 'ARRENDADOR', nit_ci: '1023998021', telefono: '+591 333-2211', descripcion: 'Local Tienda 1', estado: 'ACTIVO' },
-        { id: 2, nombre_razon_social: 'Banco Unión S.A.', tipo_acreedor: 'BANCO', nit_ci: '1020304050', telefono: '+591 800-10-2000', descripcion: 'Crédito capital de trabajo', estado: 'ACTIVO' },
-        { id: 3, nombre_razon_social: 'CRE Ltda.', tipo_acreedor: 'SERVICIO', nit_ci: '1009887766', telefono: '+591 333-7777', descripcion: 'Energía eléctrica', estado: 'ACTIVO' },
-        { id: 4, nombre_razon_social: 'Impuestos Nacionales', tipo_acreedor: 'OTRO', nit_ci: '99001122', telefono: '+591 800-10-3444', descripcion: 'IVA mensual', estado: 'ACTIVO' },
-        { id: 5, nombre_razon_social: 'PedidosYa Bolivia', tipo_acreedor: 'PLATAFORMA', nit_ci: '1122334455', telefono: '+591 700-99001', descripcion: 'Comisión por pedidos', estado: 'ACTIVO' }
-      ],
-      obligaciones: [
-        { id: 1, nombre_obligacion: 'Alquiler local Tienda 1', categoria_obligacion: 'Alquileres', acreedor: 'Inmob. San Jorge S.R.L.', tienda: 'Tienda 1 · Sucursal Norte', usuario_registro: 'A. Peña', tipo_monto: 'FIJO', monto_referencia: 3500, periodicidad: 'MENSUAL', dia_vencimiento: 5, fecha_inicio: '2025-01-05', fecha_fin: '', descripcion: 'Contrato a 3 años', estado: 'ACTIVA' },
-        { id: 2, nombre_obligacion: 'Préstamo capital de trabajo', categoria_obligacion: 'Préstamos bancarios', acreedor: 'Banco Unión S.A.', tienda: '', usuario_registro: 'A. Peña', tipo_monto: 'FIJO', monto_referencia: 1820, periodicidad: 'MENSUAL', dia_vencimiento: 15, fecha_inicio: '2025-08-15', fecha_fin: '2027-08-15', descripcion: '24 cuotas', estado: 'ACTIVA' },
-        { id: 3, nombre_obligacion: 'Energía eléctrica Tienda 1', categoria_obligacion: 'Servicios básicos', acreedor: 'CRE Ltda.', tienda: 'Tienda 1 · Sucursal Norte', usuario_registro: 'prueba123', tipo_monto: 'VARIABLE', monto_referencia: 480, periodicidad: 'MENSUAL', dia_vencimiento: 20, fecha_inicio: '2024-11-20', fecha_fin: '', descripcion: 'Medidor 88214', estado: 'ACTIVA' },
-        { id: 4, nombre_obligacion: 'IVA mensual', categoria_obligacion: 'Impuestos', acreedor: 'Impuestos Nacionales', tienda: '', usuario_registro: 'A. Peña', tipo_monto: 'VARIABLE', monto_referencia: 1250, periodicidad: 'MENSUAL', dia_vencimiento: 13, fecha_inicio: '2024-01-13', fecha_fin: '', descripcion: 'Form. 200', estado: 'ACTIVA' },
-        { id: 5, nombre_obligacion: 'Comisión delivery', categoria_obligacion: 'Comisiones', acreedor: 'PedidosYa Bolivia', tienda: 'Tienda 1 · Sucursal Norte', usuario_registro: 'prueba123', tipo_monto: 'VARIABLE', monto_referencia: 620, periodicidad: 'SEMANAL', dia_vencimiento: 1, fecha_inicio: '2026-02-02', fecha_fin: '', descripcion: '18% por pedido', estado: 'INACTIVO' }
-      ],
-      cuotas: [
-        { id: 1, obligacion: 'Alquiler local Tienda 1', periodo_desde: '2026-07-01', periodo_hasta: '2026-07-31', fecha_emision: '2026-07-25', fecha_vencimiento: '2026-08-05', monto_presupuestado: 3500, monto_real: 3500, estado: 'PENDIENTE', observacion: '' },
-        { id: 2, obligacion: 'Préstamo capital de trabajo', periodo_desde: '2026-07-01', periodo_hasta: '2026-07-31', fecha_emision: '2026-07-01', fecha_vencimiento: '2026-07-15', monto_presupuestado: 1820, monto_real: 1820, estado: 'PARCIAL', observacion: 'Pagado Bs 900 de Bs 1.820' },
-        { id: 3, obligacion: 'Energía eléctrica Tienda 1', periodo_desde: '2026-06-01', periodo_hasta: '2026-06-30', fecha_emision: '2026-07-05', fecha_vencimiento: '2026-07-20', monto_presupuestado: 480, monto_real: 512, estado: 'VENCIDA', observacion: 'Consumo mayor al presupuesto' },
-        { id: 4, obligacion: 'IVA mensual', periodo_desde: '2026-06-01', periodo_hasta: '2026-06-30', fecha_emision: '2026-07-02', fecha_vencimiento: '2026-07-13', monto_presupuestado: 1250, monto_real: 1188, estado: 'PAGADA', observacion: '' },
-        { id: 5, obligacion: 'Alquiler local Tienda 1', periodo_desde: '2026-06-01', periodo_hasta: '2026-06-30', fecha_emision: '2026-06-25', fecha_vencimiento: '2026-07-05', monto_presupuestado: 3500, monto_real: 3500, estado: 'PAGADA', observacion: '' },
-        { id: 6, obligacion: 'Energía eléctrica Tienda 1', periodo_desde: '2026-07-01', periodo_hasta: '2026-07-31', fecha_emision: '2026-07-01', fecha_vencimiento: '2026-07-20', monto_presupuestado: 480, monto_real: 480, estado: 'PENDIENTE', observacion: '' },
-        { id: 7, obligacion: 'IVA mensual', periodo_desde: '2026-07-01', periodo_hasta: '2026-07-31', fecha_emision: '2026-07-01', fecha_vencimiento: '2026-07-13', monto_presupuestado: 1250, monto_real: 1250, estado: 'PENDIENTE', observacion: '' }
-      ],
-      pagos_obligacion: [
-        { id: 1, cuota: 'IVA mensual · jun/2026', forma_pago: 'Transferencia', usuario: 'A. Peña', sesion_caja: 'CAJA-01 13/07', movimiento_caja: 'MOV-0451', fecha_hora_pago: '13/07/2026 11:20', monto: 1188, referencia: 'BNB-991204', observacion: '', estado: 'REGISTRADO' },
-        { id: 2, cuota: 'Alquiler local Tienda 1 · jun/2026', forma_pago: 'Efectivo', usuario: 'prueba123', sesion_caja: 'CAJA-01 05/07', movimiento_caja: 'MOV-0442', fecha_hora_pago: '05/07/2026 09:02', monto: 3500, referencia: '', observacion: 'Egreso de caja', estado: 'REGISTRADO' },
-        { id: 3, cuota: 'Préstamo capital de trabajo · jul/2026', forma_pago: 'Transferencia', usuario: 'A. Peña', sesion_caja: '', movimiento_caja: '', fecha_hora_pago: '15/07/2026 15:44', monto: 900, referencia: 'BNB-993318', observacion: 'Pago parcial', estado: 'REGISTRADO' },
-        { id: 4, cuota: 'Energía eléctrica Tienda 1 · jun/2026', forma_pago: 'QR Simple', usuario: 'M. Gutiérrez', sesion_caja: 'CAJA-01 21/07', movimiento_caja: 'MOV-0460', fecha_hora_pago: '21/07/2026 10:15', monto: 512, referencia: 'QR-88012', observacion: 'Con recargo', estado: 'PENDIENTE' }
-    ]
+      pagos_obligacion: []
   };
 
   state = {
     phase: 'login', loginUser: '', loginPass: '', loginError: '', showPass: false, loading: false, tienda: '',
-    mod: 'inicio', sub: 'inicio', query: '', filters: {}, sort: {}, page: {}, dashPeriod: 'dia', dashDate: '2026-07-25', menuActive: false, cartOpen: false,
+    mod: 'inicio', sub: 'inicio', query: '', filters: {}, sort: {}, page: {}, dashPeriod: 'dia', dashDate: '2026-07-29', menuActive: false, cartOpen: false,
     modalOpen: false, editingId: null, form: {}, formErrors: {}, formEnt: null,
     verOpen: false, verRows: [], verTitle: '', confirm: null,
     toast: '', toastKind: 'ok',
     cliente: 'Consumidor final', descuento: '0,00', pagoEfectivo: '0,00', pagoQr: '0,00', pagoTransf: '0,00',
     cart: [], sel: null, selCantidad: '1', selTipo: 'unidad', selDescuento: '0,00',
-    invSel: 'Moringa en cápsulas 500mg', rolSel: 'Cajero', cajaAbierta: true,
+    invSel: 'Bio Prost Ecuador 30 tabletas', invCat: 'Todas', rolSel: 'Cajero', cajaAbierta: true,
     data: this.SEED
   };
 
@@ -1195,7 +1155,7 @@ class Component extends DCLogic {
     ventas: [['estado', 'Estado', ['REGISTRADA', 'ANULADA']]],
     pagos_venta: [['forma_pago', 'Forma de pago', FORMAS]],
     cat_obligacion: [['tipo_contable', 'Tipo contable', ['GASTO_OPERATIVO', 'DEUDA_FINANCIERA', 'IMPUESTO', 'OTRO']], ['estado', 'Estado', ESTADO]],
-    acreedores: [['tipo_acreedor', 'Tipo', ['BANCO', 'ARRENDADOR', 'SERVICIO', 'PLATAFORMA', 'PROVEEDOR', 'OTRO']], ['estado', 'Estado', ESTADO]],
+    acreedores: [['tipo_acreedor', 'Tipo', ['BANCO', 'ARRENDADOR', 'SERVICIO', 'EMPLEADO', 'PLATAFORMA', 'PROVEEDOR', 'OTRO']], ['estado', 'Estado', ESTADO]],
     obligaciones: [['categoria_obligacion', 'Categoría', 'catsObl'], ['estado', 'Estado', ['ACTIVA', 'INACTIVO']]],
     cuotas: [['estado', 'Estado', ['PENDIENTE', 'PARCIAL', 'PAGADA', 'VENCIDA']]],
     pagos_obligacion: [['forma_pago', 'Forma de pago', FORMAS], ['estado', 'Estado', ['REGISTRADO', 'PENDIENTE']]]
@@ -1295,10 +1255,8 @@ class Component extends DCLogic {
     inicio: { label: 'Parte principal', icon: '◧', tabs: [['inicio', 'Resumen del día']] },
     ventas: { label: 'Venta', icon: '🛒', tabs: [['pos', 'Punto de venta'], ['ventas', 'Ventas registradas'], ['pagos_venta', 'Pagos de venta']] },
     movimientos: { label: 'Movimientos', icon: '▤', tabs: [['caja', 'Caja y movimientos']] },
-    catalogo: { label: 'Producto', icon: '🌿', tabs: [['productos', 'Productos']] },
-    lotes: { label: 'Lote', icon: '📦', tabs: [['stock', 'Lotes por producto'], ['lotes', 'Todos los lotes'], ['inventario', 'Inventario por tienda']] },
+    catalogo: { label: 'Producto', icon: '🌿', tabs: [['stock', 'Productos de tienda'], ['productos', 'Producto'], ['categorias', 'Categoría']] },
     usuarios: { label: 'Usuario', icon: '👤', tabs: [['usuarios', 'Usuarios'], ['roles', 'Roles y permisos']] },
-    categorias: { label: 'Categoría', icon: '🏷', tabs: [['dual', 'Producto y deuda']] },
     obligaciones: { label: 'Deuda', icon: '📄', tabs: [['deudaResumen', 'Resumen mensual'], ['obligaciones', 'Obligaciones'], ['pagos_obligacion', 'Pagos realizados'], ['acreedores', 'Acreedores']] },
     tiendas: { label: 'Tienda', icon: '🏬', tabs: [['tiendasCards', 'Tiendas'], ['cajas', 'Cajas']] }
   };
@@ -1392,7 +1350,7 @@ class Component extends DCLogic {
     acreedores: {
       table: 'acreedor', sing: 'acreedor', title: 'Acreedores', hint: 'acreedor · a quién se le debe',
       cols: [['nombre_razon_social', 'Razón social'], ['tipo_acreedor', 'Tipo', 'chip'], ['nit_ci', 'NIT / CI', 'mono'], ['telefono', 'Teléfono'], ['descripcion', 'Descripción'], ['estado', 'Estado', 'badge']],
-      fields: [['nombre_razon_social', 'Nombre / razón social', 'text', 1], ['tipo_acreedor', 'Tipo de acreedor', ['BANCO', 'ARRENDADOR', 'SERVICIO', 'PLATAFORMA', 'PROVEEDOR', 'OTRO'], 0], ['nit_ci', 'NIT / CI', 'text', 0], ['telefono', 'Teléfono', 'text', 0], ['estado', 'Estado', ESTADO, 1], ['descripcion', 'Descripción', 'area', 0, 2]]
+      fields: [['nombre_razon_social', 'Nombre / razón social', 'text', 1], ['tipo_acreedor', 'Tipo de acreedor', ['BANCO', 'ARRENDADOR', 'SERVICIO', 'EMPLEADO', 'PLATAFORMA', 'PROVEEDOR', 'OTRO'], 0], ['nit_ci', 'NIT / CI', 'text', 0], ['telefono', 'Teléfono', 'text', 0], ['estado', 'Estado', ESTADO, 1], ['descripcion', 'Descripción', 'area', 0, 2]]
     },
     obligaciones: {
       table: 'obligacion', sing: 'obligación', title: 'Obligaciones y deudas', hint: 'obligacion · genera cuotas según su periodicidad',
@@ -1472,6 +1430,14 @@ class Component extends DCLogic {
       if (f[3] && !val) errs[f[0]] = 'Este campo es obligatorio.';
       else if (f[2] === 'number' && val && isNaN(Number(val.replace(',', '.')))) errs[f[0]] = 'Ingresa un número válido.';
     });
+    if (ent === 'lotes') {
+      const initial = num(form.cantidad_inicial), available = num(form.cantidad_disponible);
+      if (initial <= 0) errs.cantidad_inicial = 'La cantidad inicial debe ser mayor a cero.';
+      if (available < 0 || available > initial) errs.cantidad_disponible = 'Debe estar entre 0 y la cantidad inicial.';
+      ['costo_total', 'costo_unitario', 'precio_venta_unidad', 'precio_venta_mayor'].forEach(k => {
+        if (num(form[k]) < 0) errs[k] = 'El valor no puede ser negativo.';
+      });
+    }
     const nameKey = ['nombre_categoria', 'nombre_producto', 'codigo_producto', 'nombre_obligacion', 'nombre_rol', 'nombre_usuario', 'codigo_tienda', 'codigo_caja'].find(k => def.fields.some(f => f[0] === k));
     if (nameKey && !errs[nameKey]) {
       const dup = (this.D[ent] || []).some(r => r.id !== id && String(r[nameKey]).trim().toLowerCase() === String(form[nameKey]).trim().toLowerCase());
@@ -1482,6 +1448,52 @@ class Component extends DCLogic {
       return this.flash('Revisa los campos marcados en rojo', 'error');
     }
     const data = { ...this.D };
+
+    if (ent === 'productos' && !id) {
+      const productId = Date.now();
+      const inventoryId = productId + 1;
+      const product = { id: productId, ...form };
+      data.productos = [product, ...data.productos];
+      data.inventario = [{
+        id: inventoryId, tienda: this.state.tienda, producto: form.nombre_producto,
+        stock_minimo: 0, estado: 'ACTIVO'
+      }, ...data.inventario];
+
+      const lotSeed = { producto: form.nombre_producto, tienda: this.state.tienda, estado: 'ACTIVO' };
+      const lotForm = {};
+      this.ENT.lotes.fields.forEach(f => {
+        const opts = this.optsFor(f[2]);
+        lotForm[f[0]] = lotSeed[f[0]] != null ? lotSeed[f[0]] : (opts ? opts[0] : '');
+      });
+      this.setState({
+        data, modalOpen: true, editingId: null, form: lotForm, formEnt: 'lotes', formErrors: {},
+        mod: 'catalogo', sub: 'stock', invSel: form.nombre_producto, invCat: 'Todas'
+      });
+      this.flash('Producto creado. Registra ahora su primer lote para habilitar el stock y los precios.', 'ok');
+      return;
+    }
+
+    if (ent === 'obligaciones' && id && form.tipo_monto === 'VARIABLE' && num(form.monto_referencia) > 0) {
+      data.obligaciones = data.obligaciones.map(o => o.id === id ? { ...o, ...form } : o);
+      const existingQuota = data.cuotas.find(c => c.obligacion === form.nombre_obligacion && String(c.periodo_desde).startsWith('2026-07'));
+      const dueDay = Math.max(1, Math.min(31, Math.round(num(form.dia_vencimiento) || 31)));
+      if (existingQuota) {
+        data.cuotas = data.cuotas.map(c => c.id === existingQuota.id ? {
+          ...c, monto_presupuestado: num(form.monto_referencia), monto_real: num(form.monto_referencia),
+          fecha_vencimiento: '2026-07-' + String(dueDay).padStart(2, '0'), estado: 'PENDIENTE'
+        } : c);
+      } else {
+        data.cuotas = [{
+          id: Date.now(), obligacion: form.nombre_obligacion, periodo_desde: '2026-07-01', periodo_hasta: '2026-07-31',
+          fecha_emision: '2026-07-29', fecha_vencimiento: '2026-07-' + String(dueDay).padStart(2, '0'),
+          monto_presupuestado: num(form.monto_referencia), monto_real: num(form.monto_referencia), estado: 'PENDIENTE',
+          observacion: 'Monto real registrado por el usuario'
+        }, ...data.cuotas];
+      }
+      this.setState({ data, modalOpen: false, formErrors: {} });
+      this.flash('Monto registrado y cuota mensual actualizada', 'ok');
+      return;
+    }
 
     if (ent === 'obligaciones' && !id) {
       const obligation = { id: Date.now(), ...form, tienda: form.tienda || this.state.tienda };
@@ -1536,9 +1548,14 @@ class Component extends DCLogic {
       const i = list.findIndex(r => r.id === id);
       list[i] = { ...list[i], ...form };
     } else {
-      list.unshift({ id: Date.now(), ...form });
+      list.unshift({ id: Date.now(), ...form, ...(ent === 'lotes' ? { fecha_registro: '2026-07-28' } : {}) });
     }
     data[ent] = list;
+    if (ent === 'lotes' && !id) {
+      this.setState({ data, modalOpen: false, formErrors: {}, mod: 'catalogo', sub: 'stock', invSel: form.producto, invCat: 'Todas' });
+      this.flash('Lote creado. El producto ya tiene stock y precios disponibles.', 'ok');
+      return;
+    }
     this.setState({ data, modalOpen: false, formErrors: {} });
     this.flash((id ? 'Registro actualizado en ' : 'Registro creado en ') + this.ENT[ent].table, 'ok');
   }
@@ -1637,8 +1654,8 @@ class Component extends DCLogic {
 
     const invRows = d.inventario.filter(i => i.tienda === s.tienda).map(i => ({ ...i, stock_actual: this.stockDe(i.producto) }));
     const counts = {
-      inicio: '', ventas: d.ventas.length, movimientos: d.movimientos.length, lotes: d.lotes.filter(l => l.tienda === s.tienda).length,
-      catalogo: d.productos.length, usuarios: d.usuarios.length, categorias: d.categorias.length + d.cat_obligacion.length,
+      inicio: '', ventas: d.ventas.length, movimientos: d.movimientos.length,
+      catalogo: d.productos.length, usuarios: d.usuarios.length,
       obligaciones: d.cuotas.filter(c => c.estado !== 'PAGADA').length, tiendas: d.tiendas.length
     };
 
@@ -1662,20 +1679,20 @@ class Component extends DCLogic {
       };
     });
     v.crumb = s.tienda + ' / ' + mod.label;
-    v.title = isInicio ? 'Parte principal' : isPos ? 'Punto de venta' : isStock ? 'Lotes por producto' : isDual ? 'Categorías de producto y de deuda' : isCaja ? 'Caja y movimientos' : isDebtOverview ? 'Resumen mensual de deudas' : ent.title;
+    v.title = isInicio ? 'Parte principal' : isPos ? 'Punto de venta' : isStock ? 'Productos de tienda' : isDual ? 'Categorías de producto y de deuda' : isCaja ? 'Caja y movimientos' : isDebtOverview ? 'Resumen mensual de deudas' : ent.title;
     v.desc = isInicio ? ''
       : isPos ? 'Busca el producto, define la cantidad y cobra. El stock se descuenta del lote que vence primero (FEFO).'
       : isStock ? 'Elige un producto para ver sus lotes, alertas de vencimiento y registrar uno nuevo.'
       : isDual ? 'Dos catálogos independientes: las categorías del producto y las categorías de las deudas.'
       : isDebtOverview ? 'Seguimiento mensual de cuotas, pagos y vencimientos.'
       : (this.DESCS[entKey] || ent.hint);
-    v.newLabel = isPos ? 'Nueva venta' : isStock ? 'Nuevo lote' : isInicio ? 'Nueva venta' : 'Nuevo';
+    v.newLabel = isPos ? 'Nueva venta' : isStock ? 'Nuevo producto' : isInicio ? 'Nueva venta' : 'Nuevo';
     v.query = s.query;
     v.onQuery = e => this.setState({ query: e.target.value, page: { ...s.page, [entKey]: 1 } });
     v.openNew = () => {
       if (isInicio) return this.setState({ mod: 'ventas', sub: 'pos' });
       if (isPos) return this.setState({ cart: [], sel: null, cartOpen: false, descuento: '0,00', pagoEfectivo: '0,00', pagoQr: '0,00', pagoTransf: '0,00' });
-      if (isStock) return this.openModal('lotes', null, { producto: s.invSel, tienda: s.tienda });
+      if (isStock) return this.openModal('productos');
       if (isDual) return this.openModal('categorias');
       return this.openModal(entKey);
     };
@@ -1684,6 +1701,10 @@ class Component extends DCLogic {
     v.showNewButton = !isInicio;
     const createActions = {
       productos: { ent: 'productos', label: 'Nuevo producto' },
+      categorias: { ent: 'categorias', label: 'Nueva categoría' },
+      stock: { ent: 'productos', label: 'Nuevo producto' },
+      lotes: { ent: 'lotes', label: 'Nuevo lote' },
+      inventario: { ent: 'inventario', label: 'Asignar producto' },
       usuarios: { ent: 'usuarios', label: 'Nuevo usuario' },
       roles: { ent: 'roles', label: 'Nuevo rol' },
       tiendasCards: { ent: 'tiendas', label: 'Nueva tienda' },
@@ -1707,6 +1728,7 @@ class Component extends DCLogic {
         monto_referencia: '', periodicidad: 'MENSUAL', dia_vencimiento: '1', fecha_inicio: '2026-07-27',
         fecha_fin: '', estado: 'ACTIVA', descripcion: ''
       });
+      if (createAction.ent === 'lotes') return this.openModal('lotes', null, { producto: s.invSel || d.productos[0].nombre_producto, tienda: s.tienda });
       this.openModal(createAction.ent);
     };
     v.nuevoCliente = () => this.openModal('clientes');
@@ -1825,33 +1847,50 @@ class Component extends DCLogic {
 
     if (isStock) {
       const q = s.query.trim().toLowerCase();
-      v.invProducts = invRows.filter(i => !q || i.producto.toLowerCase().includes(q)).map(i => {
-        const on = i.producto === s.invSel;
-        const bajo = i.stock_actual < num(i.stock_minimo);
+      const storeProductNames = new Set(invRows.map(i => i.producto));
+      const storeProducts = d.productos.filter(p => storeProductNames.has(p.nombre_producto) && p.estado === 'ACTIVO');
+      const categories = Array.from(new Set(storeProducts.map(p => p.categoria))).sort((a, b) => a.localeCompare(b, 'es'));
+      const activeCategory = categories.includes(s.invCat) ? s.invCat : 'Todas';
+      v.storeCategoryChips = ['Todas'].concat(categories).map(cat => {
+        const on = cat === activeCategory;
+        const count = cat === 'Todas' ? storeProducts.length : storeProducts.filter(p => p.categoria === cat).length;
         return {
-          nombre_producto: i.producto, stock_minimo: i.stock_minimo, stock_actual: i.stock_actual,
-          lotesTxt: this.lotesDe(i.producto).length + ' lote(s)',
-          select: () => this.setState({ invSel: i.producto }),
-          style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px', padding: '12px 16px', cursor: 'pointer', borderLeft: '3px solid ' + (on ? '#1F7A3D' : 'transparent'), background: on ? '#F4F9EA' : '#FFFFFF', borderBottom: '1px solid #F1F4EE' },
-          stockStyle: { fontSize: '13px', fontWeight: 700, fontVariantNumeric: 'tabular-nums', color: bajo ? '#E12A2A' : '#1F7A3D', background: bajo ? '#FDECEC' : '#EAF4D3', padding: '4px 9px', borderRadius: '8px' }
+          label: cat, count,
+          select: () => this.setState({ invCat: cat }),
+          style: { height: '34px', padding: '0 13px', border: '1px solid ' + (on ? '#1F7A3D' : '#DCE4D6'), borderRadius: '8px', background: on ? '#1F7A3D' : '#FFFFFF', color: on ? '#FFFFFF' : '#55655B', fontSize: '12px', fontWeight: on ? 700 : 500, whiteSpace: 'nowrap', cursor: 'pointer' }
         };
       });
-      const prod = d.productos.find(p => p.nombre_producto === s.invSel);
-      const lotes = this.lotesDe(s.invSel);
-      const inv = invRows.find(i => i.producto === s.invSel);
-      v.invSelNombre = s.invSel;
-      v.invSelMeta = (prod ? prod.codigo_producto + ' · ' + prod.categoria + ' · ' : '') + 'stock ' + (inv ? inv.stock_actual : 0) + ' u · mínimo ' + (inv ? inv.stock_minimo : 0) + ' u';
-      const lcols = [['numero_lote', 'N° lote', 'mono'], ['fecha_registro', 'Registro', 'date'], ['fecha_vencimiento', 'Vencimiento', 'date'], ['cantidad_inicial', 'Cant. inicial', 'num'], ['cantidad_disponible', 'Disponible', 'num'], ['costo_unitario', 'Costo unit.', 'money'], ['precio_venta_unidad', 'P. unidad', 'money'], ['precio_venta_mayor', 'P. mayor', 'money'], ['alerta_lote', 'Alerta', 'badge'], ['estado', 'Estado', 'badge']];
-      v.loteCols = lcols.map(c => this.th(c));
-      v.loteRows = lotes.map(l => ({
-        cells: lcols.map(c => this.cell(l, c)),
-        edit: () => this.openModal('lotes', l),
-        remove: () => this.removeRow('lotes', l.id)
-      }));
-      v.noLotes = lotes.length === 0;
-      v.nuevoLote = () => this.openModal('lotes', null, { producto: s.invSel, tienda: s.tienda });
-    }
 
+      const visibleProducts = storeProducts.filter(p => {
+        if (activeCategory !== 'Todas' && p.categoria !== activeCategory) return false;
+        const productLots = this.lotesDe(p.nombre_producto);
+        const haystack = [p.nombre_producto, p.codigo_producto, p.codigo_barra, p.categoria]
+          .concat(productLots.map(l => l.numero_lote)).join(' ').toLowerCase();
+        return !q || haystack.includes(q);
+      });
+      v.storeProductRows = visibleProducts.flatMap(p => {
+        const productLots = this.lotesDe(p.nombre_producto);
+        const rows = productLots.length ? productLots : [null];
+        return rows.map(l => ({
+          nombre: p.nombre_producto,
+          codigo: p.codigo_producto,
+          categoria: p.categoria,
+          imagen: p.imagen || 'Imagen pendiente',
+          imagenSrc: './' + (p.imagen || 'uploads/imagen.png'),
+          lote: l ? (l.numero_lote || 'Sin número') : 'Sin lote',
+          cantidad: l ? String(l.cantidad_disponible).replace('.', ',') + ' u' : '0 u',
+          compra: l ? 'Bs ' + money(l.costo_total) : '—',
+          costoUnidad: l ? 'Bs ' + money(l.costo_unitario) : '—',
+          venta: l ? 'Bs ' + money(l.precio_venta_unidad) : '—',
+          mayor: l ? 'Bs ' + money(l.precio_venta_mayor) : '—',
+          vence: l ? dmy(l.fecha_vencimiento) : '—',
+          edit: () => l
+            ? this.openModal('lotes', l)
+            : this.openModal('lotes', null, { producto: p.nombre_producto, tienda: s.tienda })
+        }));
+      });
+      v.noStoreProducts = v.storeProductRows.length === 0;
+    }
     if (isPos) {
       const q = s.query.trim().toLowerCase();
       const lista = d.productos.filter(p => p.estado === 'ACTIVO' && (!q || (p.nombre_producto + ' ' + p.codigo_producto + ' ' + (p.codigo_barra || '') + ' ' + p.categoria).toLowerCase().includes(q)));
@@ -1861,13 +1900,13 @@ class Component extends DCLogic {
         const lote = this.loteFifo(p.nombre_producto);
         const on = s.sel === p.nombre_producto;
         return {
-          nombre_producto: p.nombre_producto, codigo_producto: p.codigo_producto, categoria: p.categoria,
+          nombre_producto: p.nombre_producto, codigo_producto: p.codigo_producto, categoria: p.categoria, imagenSrc: './' + (p.imagen || 'uploads/imagen.png'),
           stockLabel: stock > 0 ? stock + ' u' : 'sin stock',
           vence: lote ? dmy(lote.fecha_vencimiento) : '—',
           precio: lote ? money(lote.precio_venta_unidad) : '—',
           mayor: lote ? money(lote.precio_venta_mayor) : '—',
-          cardStyle: { border: '1px solid ' + (on ? '#A6CE39' : '#E3E9DE'), borderRadius: '12px', padding: '12px', cursor: stock > 0 ? 'pointer' : 'not-allowed', display: 'flex', flexDirection: 'column', gap: '6px', background: on ? '#F4F9EA' : '#FCFDFB', opacity: stock > 0 ? 1 : .55 },
-          stockStyle: { fontSize: '10.5px', fontWeight: 700, whiteSpace: 'nowrap', color: stock > 0 ? '#1F7A3D' : '#E12A2A', background: stock > 0 ? '#EAF4D3' : '#FDECEC', padding: '3px 7px', borderRadius: '999px' },
+          cardStyle: { border: '1px solid ' + (on ? '#A6CE39' : '#E3E9DE'), borderRadius: '8px', overflow: 'hidden', cursor: stock > 0 ? 'pointer' : 'not-allowed', display: 'flex', flexDirection: 'column', background: on ? '#F8FBEF' : '#FFFFFF', opacity: stock > 0 ? 1 : .55, transition: 'border-color .14s, box-shadow .14s' },
+          stockStyle: { position: 'absolute', top: '9px', right: '9px', fontSize: '10px', fontWeight: 700, whiteSpace: 'nowrap', color: stock > 0 ? '#1F7A3D' : '#E12A2A', background: stock > 0 ? '#EAF4D3' : '#FDECEC', padding: '4px 7px', borderRadius: '999px', boxShadow: '0 1px 4px rgba(22,48,31,.08)' },
           select: () => {
             if (!stock) return this.flash('Sin stock disponible en ' + s.tienda);
             this.setState({ sel: p.nombre_producto, selCantidad: '1', selTipo: 'unidad', selDescuento: '0,00' });
@@ -2007,12 +2046,14 @@ class Component extends DCLogic {
       };
       const registeredPaymentsFor = c => d.pagos_obligacion.filter(p => p.estado === 'REGISTRADO' && String(p.cuota).startsWith(c.obligacion) && String(p.cuota).toLowerCase().indexOf(quotaPeriodLabel(c)) >= 0);
       const currentQuotas = d.cuotas.filter(c => String(c.periodo_desde).startsWith(periodKey));
+      const quotaNames = new Set(currentQuotas.map(c => c.obligacion));
+      const variablePending = d.obligaciones.filter(o => o.estado === 'ACTIVA' && o.tipo_monto === 'VARIABLE' && !quotaNames.has(o.nombre_obligacion));
       const monthTotal = currentQuotas.reduce((a, c) => a + num(c.monto_real || c.monto_presupuestado), 0);
       const monthPaid = currentQuotas.reduce((a, c) => a + registeredPaymentsFor(c).reduce((s2, p) => s2 + num(p.monto), 0), 0);
       const monthBalance = Math.max(0, monthTotal - monthPaid);
       const progress = monthTotal ? Math.min(100, Math.round((monthPaid / monthTotal) * 100)) : 0;
       v.debtKpis = [
-        { label: 'Meta total del mes', value: 'Bs ' + money(monthTotal), detail: currentQuotas.length + ' deudas que deben cubrirse' },
+        { label: 'Meta total del mes', value: 'Bs ' + money(monthTotal), detail: currentQuotas.length + ' cuotas definidas · ' + variablePending.length + ' por definir' },
         { label: 'Pagado', value: 'Bs ' + money(monthPaid), detail: 'Pagos confirmados y registrados' },
         { label: 'Falta cubrir', value: 'Bs ' + money(monthBalance), detail: 'Saldo de todas las deudas del mes' },
         { label: 'Cumplimiento', value: progress + '%', detail: 'Avance de julio de 2026' }
@@ -2020,7 +2061,7 @@ class Component extends DCLogic {
       v.debtProgress = progress;
       v.debtProgressStyle = { height: '100%', width: progress + '%', borderRadius: '5px', background: progress >= 100 ? '#1F7A3D' : '#A6CE39', transition: 'width .2s ease' };
       const unpaid = currentQuotas.filter(c => c.estado !== 'PAGADA').sort((a, b) => String(a.fecha_vencimiento).localeCompare(String(b.fecha_vencimiento)));
-      v.debtRows = unpaid.map(c => {
+      const quotaRows = unpaid.map(c => {
         const obl = d.obligaciones.find(o => o.nombre_obligacion === c.obligacion) || {};
         const paid = registeredPaymentsFor(c).reduce((a, p) => a + num(p.monto), 0);
         const totalQ = num(c.monto_real || c.monto_presupuestado);
@@ -2028,14 +2069,23 @@ class Component extends DCLogic {
         return {
           obligacion: c.obligacion, categoria: obl.categoria_obligacion || 'Sin categoría', acreedor: obl.acreedor || 'Sin acreedor', vence: dmy(c.fecha_vencimiento),
           total: 'Bs ' + money(totalQ), pagado: 'Bs ' + money(paid), saldo: 'Bs ' + money(Math.max(0, totalQ - paid)), estado: c.estado,
+          paymentDetail: 'Pagado Bs ' + money(paid) + ' de Bs ' + money(totalQ), actionLabel: 'Pagar',
           badgeStyle: { fontSize: '10px', fontWeight: 700, color: tone[0], background: tone[1], padding: '3px 7px', borderRadius: '999px' },
           pay: () => this.openModal('pagos_obligacion', null, {
             cuota: this.cuotaLabel(c), forma_pago: 'Efectivo', usuario: 'prueba123',
-            sesion_caja: s.cajaAbierta ? 'CAJA-01 27/07' : '', movimiento_caja: '', fecha_hora_pago: '27/07/2026 12:00',
+            sesion_caja: s.cajaAbierta ? 'CAJA-01 29/07' : '', movimiento_caja: '', fecha_hora_pago: '29/07/2026 12:00',
             monto: '', referencia: '', estado: 'REGISTRADO', observacion: ''
           })
         };
       });
+      const variableRows = variablePending.map(o => ({
+          obligacion: o.nombre_obligacion, categoria: o.categoria_obligacion, acreedor: o.acreedor || 'Sin acreedor',
+          vence: 'al registrar la factura', total: 'Por definir', pagado: '—', saldo: 'Por definir', estado: 'SIN MONTO',
+          paymentDetail: 'Ingresa el valor real de la factura del mes', actionLabel: 'Definir monto',
+          badgeStyle: { fontSize: '10px', fontWeight: 700, color: '#9A6B00', background: '#FBF1D4', padding: '3px 7px', borderRadius: '999px' },
+          pay: () => this.openModal('obligaciones', o, { monto_referencia: '' })
+        }));
+      v.debtRows = quotaRows.concat(variableRows);
       const categoryTotals = {};
       currentQuotas.forEach(c => {
         const obl = d.obligaciones.find(o => o.nombre_obligacion === c.obligacion) || {};
@@ -2058,14 +2108,14 @@ class Component extends DCLogic {
       let rangeLabel = 'Últimos 7 días hasta ' + dmy(s.dashDate);
       if (s.dashPeriod === 'semana') {
         serie = [
-          { dia: 'Sem 1', monto: 6840 }, { dia: 'Sem 2', monto: 7310 }, { dia: 'Sem 3', monto: 6595 },
-          { dia: 'Sem 4', monto: 8736 }, { dia: 'Sem 5', monto: 7940 }, { dia: 'Sem 6', monto: 9120 }, { dia: 'Sem 7', monto: 8245 }
+          { dia: 'Sem 1', monto: 0 }, { dia: 'Sem 2', monto: 0 }, { dia: 'Sem 3', monto: 0 },
+          { dia: 'Sem 4', monto: 0 }, { dia: 'Sem 5', monto: 0 }, { dia: 'Sem 6', monto: 0 }, { dia: 'Sem 7', monto: 0 }
         ];
         rangeLabel = 'Comparación de las últimas 7 semanas hasta ' + dmy(s.dashDate);
       } else if (s.dashPeriod === 'mes') {
         serie = [
-          { dia: 'Ene', monto: 28640 }, { dia: 'Feb', monto: 31280 }, { dia: 'Mar', monto: 29750 },
-          { dia: 'Abr', monto: 34120 }, { dia: 'May', monto: 36540 }, { dia: 'Jun', monto: 33210 }, { dia: 'Jul', monto: 38960 }
+          { dia: 'Ene', monto: 0 }, { dia: 'Feb', monto: 0 }, { dia: 'Mar', monto: 0 },
+          { dia: 'Abr', monto: 0 }, { dia: 'May', monto: 0 }, { dia: 'Jun', monto: 0 }, { dia: 'Jul', monto: 0 }
         ];
         rangeLabel = 'Comparación mensual hasta ' + dmy(s.dashDate);
       }
@@ -2076,7 +2126,7 @@ class Component extends DCLogic {
         kpi('Total de ventas', 'Bs ' + money(totalPeriodo), serie.length + ' períodos registrados'),
         kpi('Ganancia de las ventas', 'Bs ' + money(gananciaPeriodo), '45% estimado sobre las ventas', '#1F7A3D')
       ];
-      const maxV = Math.max.apply(null, serie.map(x => x.monto));
+      const maxV = Math.max(1, ...serie.map(x => x.monto));
       v.chartBars = serie.map(x => {
         const profit = x.monto * 0.45;
         return {
