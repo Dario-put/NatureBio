@@ -69,7 +69,7 @@
     .header-title-row { flex-direction: column !important; }
     .header-title-row > button { width: 100%; justify-content: center !important; }
     .dashboard-kpis { grid-template-columns: 1fr !important; }
-    .pos-kpis { grid-template-columns: 1fr !important; }
+    .pos-kpis { grid-template-columns: repeat(3, minmax(150px, 1fr)) !important; overflow-x: auto; padding-bottom: 2px; }
     .debt-kpis { grid-template-columns: 1fr !important; }
     .debt-grid { grid-template-columns: 1fr !important; }
     .dashboard-filters { width: 100%; align-items: stretch !important; }
@@ -107,9 +107,40 @@
     .product-line-fields { grid-template-columns: 1fr !important; }
   }
 
-  @media (max-width: 700px) {
-    .sale-cart-modal { position: fixed; left: 0; right: 0; bottom: 0; width: 100% !important; max-width: none !important; max-height: 94vh !important; overflow-y: auto !important; border-radius: 12px 12px 0 0 !important; }
+  .sale-workspace { flex-wrap: nowrap !important; align-items: stretch !important; }
+  .sale-workspace > div { flex: 1 1 0 !important; min-width: 0 !important; }
+  .sale-cart-panel { width: 390px !important; flex: 0 0 390px !important; }
+
+  @media (max-width: 1180px) and (min-width: 901px) {
+    .sale-cart-panel { width: 340px !important; flex-basis: 340px !important; }
   }
+
+  @media (max-width: 900px) {
+    .sale-cart-panel { position: fixed !important; z-index: 60; top: 0 !important; right: 0; bottom: 0; width: min(92vw, 410px) !important; max-width: 410px !important; max-height: 100vh !important; border-radius: 0 !important; box-shadow: -16px 0 38px rgba(12, 32, 20, .25) !important; }
+  }
+
+  @media (max-width: 900px) {
+    .checkout-overlay { padding: 0 !important; align-items: stretch !important; }
+    .checkout-shell { max-height: 100vh !important; border-radius: 0 !important; grid-template-columns: 1fr !important; overflow-y: auto !important; }
+    .checkout-shell > section, .checkout-shell > aside { overflow: visible !important; }
+    .checkout-shell > aside { border-left: none !important; border-top: 1px solid #DCE4D6 !important; }
+  }
+
+  @media (max-width: 620px) {
+    .checkout-shell > section { padding: 12px !important; }
+    .checkout-receipt { min-height: 560px !important; padding: 22px 18px !important; }
+  }
+
+  .pos-products-scroll {
+    overflow-y: scroll !important;
+    scrollbar-gutter: stable;
+    scrollbar-width: auto;
+    scrollbar-color: #8EAB92 #EEF2EA;
+  }
+  .pos-products-scroll::-webkit-scrollbar { width: 12px; }
+  .pos-products-scroll::-webkit-scrollbar-track { background: #EEF2EA; border-left: 1px solid #E3E9DE; }
+  .pos-products-scroll::-webkit-scrollbar-thumb { background: #8EAB92; border: 3px solid #EEF2EA; border-radius: 8px; }
+  .pos-products-scroll::-webkit-scrollbar-thumb:hover { background: #1F7A3D; }
 </style>
 </helmet>
 
@@ -273,44 +304,47 @@
       </sc-for>
       <sc-if value="{{ showPos }}">
         <button onClick="{{ nuevoCliente }}" title="Registrar cliente" style="height: 34px; margin: 0 0 7px auto; padding: 0 12px; border: 1px solid #C9DE95; border-radius: 8px; background: #F7FBEE; color: #1F7A3D; cursor: pointer; display: flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 700; white-space: nowrap" style-hover="background: #EAF4D3"><span style="font-size: 16px; line-height: 1">+</span> Nuevo cliente</button>
-        <button onClick="{{ openCart }}" title="Abrir carrito" aria-label="Abrir carrito" style="position: relative; width: 38px; height: 34px; margin: 0 0 7px 0; border: 1px solid #C9DE95; border-radius: 8px; background: #1F7A3D; color: #FFFFFF; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 17px" style-hover="background: #2E9E4F">🛒<span style="position: absolute; top: -7px; right: -7px; min-width: 19px; height: 19px; padding: 0 5px; border-radius: 10px; background: #A6CE39; color: #12301F; border: 2px solid #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700">{{ cartLineCount }}</span></button>
+        <button onClick="{{ toggleCart }}" title="{{ cartToggleTitle }}" aria-label="{{ cartToggleTitle }}" style="position: relative; width: 38px; height: 34px; margin: 0 0 7px 0; border: 1px solid #C9DE95; border-radius: 8px; background: #1F7A3D; color: #FFFFFF; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 17px" style-hover="background: #2E9E4F">🛒<span style="position: absolute; top: -7px; right: -7px; min-width: 19px; height: 19px; padding: 0 5px; border-radius: 10px; background: #A6CE39; color: #12301F; border: 2px solid #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700">{{ cartLineCount }}</span></button>
       </sc-if>
       <sc-if value="{{ showContextCreate }}">
         <button onClick="{{ contextCreate }}" style="height: 34px; margin: 0 0 7px auto; padding: 0 13px; border: none; border-radius: 8px; background: #1F7A3D; color: #FFFFFF; cursor: pointer; display: flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 700; white-space: nowrap" style-hover="background: #2E9E4F"><span style="font-size: 16px; line-height: 1">+</span>{{ contextCreateLabel }}</button>
       </sc-if>
     </div>
 
-    <div class="app-content" style="flex: 1; overflow: auto; padding: 22px 28px 30px">
+    <div class="app-content" style="{{ appContentStyle }}">
 
       <sc-if value="{{ showPos }}" hint-placeholder-val="{{ true }}">
-        <div style="display: flex; flex-direction: column; gap: 18px">
-          <div class="pos-kpis" style="display: grid; grid-template-columns: repeat(3, minmax(180px, 1fr)); gap: 12px">
-            <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="3">
-              <div style="background: #FFFFFF; border: 1px solid #E3E9DE; border-radius: 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px">
-                <span style="font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: #7C8C80">{{ k.label }}</span>
-                <span style="font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; color: #16301F; font-variant-numeric: tabular-nums">{{ k.value }}</span>
-                <span style="{{ k.deltaStyle }}">{{ k.delta }}</span>
+        <div class="pos-layout" style="height: 100%; min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: 18px">
+          <div class="sale-workspace" style="flex: 1; min-height: 0; overflow: hidden; display: flex; flex-wrap: wrap; gap: 18px; align-items: stretch">
+            <div style="height: 100%; min-height: 0; flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+              <div class="pos-kpis" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 0">
+                <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="3">
+                  <div style="min-width: 0; background: #FFFFFF; border: 1px solid #E3E9DE; border-radius: 8px; padding: 11px 12px; display: flex; flex-direction: column; gap: 6px">
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+                      <span style="min-width: 0; font-size: 12px; font-weight: 700; color: #16301F">{{ k.label }}</span>
+                      <sc-if value="{{ k.showCounter }}">
+                        <span style="{{ k.counterStyle }}">{{ k.counter }}</span>
+                      </sc-if>
+                    </div>
+                    <span style="{{ k.valueStyle }}">{{ k.value }}</span>
+                  </div>
+                </sc-for>
               </div>
-            </sc-for>
-          </div>
 
-          <div style="display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start">
-            <div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column">
-              <div style="background: #FFFFFF; border: 1px solid #E3E9DE; border-radius: 8px; overflow: hidden">
+              <div class="pos-products-panel" style="flex: 1; min-height: 0; background: #FFFFFF; border: 1px solid #E3E9DE; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column">
               <div style="display: flex; align-items: center; justify-content: space-between; padding: 15px 18px 11px; gap: 12px">
                 <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
                   <span style="font-size: 14px; font-weight: 700; color: #16301F">Productos disponibles en {{ tiendaActual }}</span>
-                  <span style="font-size: 12px; color: #7C8C80">El stock se descuenta del lote que vence primero</span>
                 </div>
                 <span style="font-size: 11.5px; color: #7C8C80; white-space: nowrap">{{ prodCount }} productos</span>
               </div>
               <div style="padding: 0 18px 14px; border-bottom: 1px solid #EEF2EA">
                 <label style="position: relative; display: block">
                   <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #7C8C80; font-size: 15px">⌕</span>
-                  <input value="{{ query }}" onChange="{{ onQuery }}" placeholder="Buscar por nombre, código de producto o código de barras" style="width: 100%; height: 40px; padding: 0 12px 0 36px; border: 1px solid #DCE4D6; border-radius: 8px; background: #FAFCF8; font-size: 13px; color: #1B2A20" />
+                  <input value="{{ query }}" onChange="{{ onQuery }}" placeholder="Buscar por nombre o código de barras" style="width: 100%; height: 40px; padding: 0 12px 0 36px; border: 1px solid #DCE4D6; border-radius: 8px; background: #FAFCF8; font-size: 13px; color: #1B2A20" />
                 </label>
               </div>
-              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(195px, 1fr)); gap: 10px; padding: 14px 16px 16px">
+              <div class="pos-products-scroll" style="flex: 1; min-height: 0; max-height: 100%; overflow-y: scroll; scrollbar-gutter: stable; display: grid; align-content: start; grid-auto-rows: max-content; grid-template-columns: repeat(auto-fit, minmax(195px, 1fr)); gap: 10px; padding: 14px 16px 16px">
                 <sc-for list="{{ posProducts }}" as="p" hint-placeholder-count="6">
                   <div onClick="{{ p.select }}" style="{{ p.cardStyle }}" style-hover="border-color: #A6CE39; box-shadow: 0 5px 16px rgba(31, 122, 61, .09)">
                     <div style="position: relative; height: 154px; padding: 10px; background: #FFFFFF; border-bottom: 1px solid #EEF2EA; display: flex; align-items: center; justify-content: center">
@@ -319,7 +353,7 @@
                     </div>
                     <div style="padding: 11px 12px 10px; display: flex; flex-direction: column; gap: 4px; min-height: 82px">
                       <span style="font-size: 13px; font-weight: 700; color: #16301F; line-height: 1.3">{{ p.nombre_producto }}</span>
-                      <span style="font-size: 10.5px; color: #7C8C80; font-family: ui-monospace, monospace">{{ p.codigo_producto }}</span>
+                      <span style="font-size: 10.5px; color: #7C8C80; font-family: ui-monospace, monospace">{{ p.codigo_barra }}</span>
                       <span style="font-size: 11px; color: #7C8C80">Vence {{ p.vence }}</span>
                     </div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: auto">
@@ -338,57 +372,10 @@
             </div>
           </div>
 
-            <sc-if value="{{ hasSelection }}">
-              <div onClick="{{ clearSel }}" style="position: fixed; inset: 0; z-index: 52; background: rgba(12, 32, 20, .48); display: flex; align-items: center; justify-content: center; padding: 24px; animation: fadeIn .14s ease">
-                <div class="product-line-modal" onClick="{{ stop }}" style="width: 520px; max-width: 100%; background: #FFFFFF; border-radius: 12px; box-shadow: 0 24px 70px rgba(12, 32, 20, .28); overflow: hidden; animation: popIn .18s ease">
-                  <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 19px 21px; border-bottom: 1px solid #EEF2EA">
-                    <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
-                      <span style="font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: #7C8C80">Agregar producto</span>
-                      <span style="font-family: 'Space Grotesk', sans-serif; font-size: 19px; font-weight: 700; color: #16301F">{{ selNombre }}</span>
-                      <span style="font-size: 11.5px; color: #7C8C80; font-family: ui-monospace, monospace">{{ selCodigo }}</span>
-                    </div>
-                    <button onClick="{{ clearSel }}" title="Cerrar" style="width: 32px; height: 32px; flex: 0 0 32px; border: 1px solid #DCE4D6; border-radius: 8px; background: #FFFFFF; color: #55655B; cursor: pointer; font-size: 14px">✕</button>
-                  </div>
-                  <div style="padding: 17px 21px; display: flex; flex-direction: column; gap: 16px">
-                    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; padding: 11px 12px; background: #F7FAF4; border: 1px solid #E3E9DE; border-radius: 8px">
-                      <div style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 10px; text-transform: uppercase; color: #7C8C80">Lote</span><span style="font-size: 12px; font-weight: 700; color: #16301F">{{ selLote }}</span></div>
-                      <div style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 10px; text-transform: uppercase; color: #7C8C80">Vencimiento</span><span style="font-size: 12px; font-weight: 700; color: #16301F">{{ selVence }}</span></div>
-                      <div style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 10px; text-transform: uppercase; color: #7C8C80">Disponible</span><span style="font-size: 12px; font-weight: 700; color: #1F7A3D">{{ selDisp }}</span></div>
-                    </div>
-                    <div class="product-line-fields" style="display: grid; grid-template-columns: 1fr 1fr; gap: 13px">
-                      <label style="display: flex; flex-direction: column; gap: 6px; font-size: 11px; font-weight: 500; color: #55655B">Cantidad
-                        <div style="display: grid; grid-template-columns: 38px minmax(0, 1fr) 38px; border: 1px solid #DCE4D6; border-radius: 8px; overflow: hidden; background: #FFFFFF">
-                          <button onClick="{{ selDec }}" style="height: 40px; border: none; background: #FAFCF8; color: #1F7A3D; cursor: pointer; font-size: 18px">−</button>
-                          <input value="{{ selCantidad }}" onChange="{{ onSelCantidad }}" style="min-width: 0; height: 40px; border: none; text-align: center; font-size: 15px; font-weight: 700; color: #16301F; background: #FFFFFF" />
-                          <button onClick="{{ selInc }}" style="height: 40px; border: none; background: #FAFCF8; color: #1F7A3D; cursor: pointer; font-size: 18px">+</button>
-                        </div>
-                      </label>
-                      <label style="display: flex; flex-direction: column; gap: 6px; font-size: 11px; font-weight: 500; color: #55655B">Precio aplicado
-                        <select value="{{ selTipo }}" onChange="{{ onSelTipo }}" style="height: 42px; border: 1px solid #DCE4D6; border-radius: 8px; background: #FFFFFF; padding: 0 10px; font-size: 13px; color: #1B2A20">
-                          <option value="unidad">Unidad · Bs {{ selPrecioUnidad }}</option>
-                          <option value="mayor">Mayor · Bs {{ selPrecioMayor }}</option>
-                        </select>
-                      </label>
-                      <label style="display: flex; flex-direction: column; gap: 6px; font-size: 11px; font-weight: 500; color: #55655B">Descuento de línea (Bs)
-                        <input value="{{ selDescuento }}" onChange="{{ onSelDescuento }}" style="height: 42px; border: 1px solid #DCE4D6; border-radius: 8px; background: #FFFFFF; padding: 0 11px; font-size: 13px; color: #1B2A20" />
-                      </label>
-                      <div style="display: flex; flex-direction: column; gap: 6px">
-                        <span style="font-size: 11px; font-weight: 500; color: #55655B">Subtotal</span>
-                        <div style="height: 42px; display: flex; align-items: center; justify-content: flex-end; font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; color: #1F7A3D">Bs {{ selSubtotal }}</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div style="display: flex; justify-content: flex-end; gap: 9px; padding: 14px 21px; border-top: 1px solid #EEF2EA; background: #FBFCF9">
-                    <button onClick="{{ clearSel }}" style="height: 40px; padding: 0 17px; border: 1px solid #DCE4D6; border-radius: 8px; background: #FFFFFF; color: #55655B; cursor: pointer; font-size: 13px">Cancelar</button>
-                    <button onClick="{{ addLine }}" style="height: 40px; padding: 0 20px; border: none; border-radius: 8px; background: #1F7A3D; color: #FFFFFF; cursor: pointer; font-size: 13px; font-weight: 700" style-hover="background: #2E9E4F">Agregar a la nota</button>
-                  </div>
-                </div>
-              </div>
-            </sc-if>
           <sc-if value="{{ cartOpen }}">
-            <div onClick="{{ closeCart }}" style="position: fixed; inset: 0; z-index: 50; background: rgba(12, 32, 20, .48); display: flex; align-items: center; justify-content: center; padding: 24px; animation: fadeIn .14s ease">
-              <div class="sale-cart-modal" onClick="{{ stop }}" style="width: 620px; max-width: 100%; max-height: 92vh; min-width: 0; background: #FFFFFF; border: 1px solid #E3E9DE; border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 24px 70px rgba(12, 32, 20, .3); animation: popIn .18s ease">
-            <div style="padding: 15px 17px; border-bottom: 1px solid #EEF2EA; display: flex; align-items: center; justify-content: space-between">
+            <aside class="sale-cart-panel" style="width: 390px; height: 100%; min-height: 0; flex: 0 0 390px; min-width: 0; background: #FFFFFF; border: 1px solid #E3E9DE; border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; order: 1; position: sticky; top: 0; box-shadow: 0 6px 20px rgba(22, 48, 31, .08); animation: popIn .16s ease">
+
+<div style="padding: 15px 17px; border-bottom: 1px solid #EEF2EA; display: flex; align-items: center; justify-content: space-between">
               <div style="display: flex; flex-direction: column; gap: 2px">
                 <span style="font-size: 14px; font-weight: 700; color: #16301F">Nota de venta {{ nextVenta }}</span>
                 <span style="font-size: 11.5px; color: #7C8C80">{{ lineCount }} líneas · {{ cliente }}</span>
@@ -396,88 +383,108 @@
               <div style="display: flex; align-items: center; gap: 8px"><span style="font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #1F7A3D; background: #EAF4D3; padding: 4px 9px; border-radius: 999px">Borrador</span><button onClick="{{ closeCart }}" title="Cerrar carrito" style="width: 30px; height: 30px; border: 1px solid #DCE4D6; border-radius: 8px; background: #FFFFFF; color: #55655B; cursor: pointer; font-size: 13px">✕</button></div>
             </div>
 
-            <div style="flex: 1; min-height: 96px; max-height: 260px; overflow: auto; padding: 12px 15px; display: flex; flex-direction: column; gap: 8px">
+            <div style="flex: 1; min-height: 0; overflow-y: auto; padding: 12px 15px; display: flex; flex-direction: column; gap: 8px">
               <sc-if value="{{ cartEmpty }}">
                 <div style="flex: 1; min-height: 82px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 12.5px; color: #9AA79D; border: 1px dashed #DCE4D6; border-radius: 12px; padding: 18px">La nota está vacía.<br />Selecciona un producto del catálogo para comenzar.</div>
               </sc-if>
               <sc-for list="{{ cart }}" as="l" hint-placeholder-count="0">
-                <div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; padding-bottom: 8px; border-bottom: 1px solid #F1F4EE">
-                  <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0">
-                    <span style="font-size: 12.5px; font-weight: 500; color: #16301F">{{ l.nombre }}</span>
-                    <span style="font-size: 11px; color: #7C8C80; font-variant-numeric: tabular-nums">{{ l.detalle }}</span>
-                  </div>
-                  <div style="display: flex; align-items: center; gap: 8px">
-                    <div style="display: flex; align-items: center; border: 1px solid #DCE4D6; border-radius: 8px; overflow: hidden">
-                      <button onClick="{{ l.dec }}" style="width: 25px; height: 28px; border: none; background: #FAFCF8; color: #1F7A3D; cursor: pointer; font-size: 14px">−</button>
-                      <span style="min-width: 24px; text-align: center; font-size: 12.5px; font-weight: 700; font-variant-numeric: tabular-nums">{{ l.cantidad }}</span>
-                      <button onClick="{{ l.inc }}" style="width: 25px; height: 28px; border: none; background: #FAFCF8; color: #1F7A3D; cursor: pointer; font-size: 14px">＋</button>
+                <div style="padding: 10px; border: 1px solid #E3E9DE; border-radius: 8px; background: #FFFFFF; display: flex; flex-direction: column; gap: 9px">
+                  <div style="display: grid; grid-template-columns: 54px minmax(0, 1fr) 28px; gap: 10px; align-items: center">
+                    <img src="{{ l.imagenSrc }}" alt="{{ l.nombre }}" style="width: 54px; height: 54px; border: 1px solid #E3E9DE; border-radius: 7px; background: #FFFFFF; object-fit: contain" />
+                    <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0">
+                      <strong style="font-size: 12.5px; color: #16301F; line-height: 1.25">{{ l.nombre }}</strong>
+                      <span style="font-size: 10.5px; color: #7C8C80; font-family: ui-monospace, monospace">{{ l.codigo }}</span>
+                      <span style="font-size: 10.5px; color: #7C8C80">Vence {{ l.vence }}</span>
                     </div>
-                    <span style="min-width: 64px; text-align: right; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; color: #16301F">{{ l.subtotal }}</span>
-                    <button onClick="{{ l.remove }}" title="Quitar" style="width: 26px; height: 26px; border: none; border-radius: 7px; background: #FDECEC; color: #E12A2A; cursor: pointer; font-size: 12px">✕</button>
+                    <button onClick="{{ l.remove }}" title="Quitar producto" style="width: 28px; height: 28px; align-self: flex-start; border: 1px solid #F2CACA; border-radius: 7px; background: #FFF7F7; color: #C62828; cursor: pointer; font-size: 13px">×</button>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 96px 68px minmax(72px, 1fr); gap: 8px; align-items: end">
+                    <label style="display: flex; flex-direction: column; gap: 4px; font-size: 9.5px; font-weight: 700; text-transform: uppercase; color: #7C8C80">Cantidad
+                      <div style="height: 32px; display: grid; grid-template-columns: 28px 40px 28px; border: 1px solid #DCE4D6; border-radius: 7px; overflow: hidden">
+                        <button onClick="{{ l.dec }}" style="border: none; background: #F7FAF4; color: #1F7A3D; cursor: pointer; font-size: 15px">−</button>
+                        <input value="{{ l.cantidad }}" onChange="{{ l.onCantidad }}" style="width: 40px; min-width: 0; border: none; text-align: center; font-size: 12.5px; font-weight: 700; color: #16301F; background: #FFFFFF" />
+                        <button onClick="{{ l.inc }}" style="border: none; background: #F7FAF4; color: #1F7A3D; cursor: pointer; font-size: 15px">+</button>
+                      </div>
+                    </label>
+                    <div style="display: flex; flex-direction: column; gap: 4px">
+                      <span style="font-size: 9.5px; font-weight: 700; text-transform: uppercase; color: #7C8C80">Precio</span>
+                      <div style="height: 32px; display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #DCE4D6; border-radius: 7px; overflow: hidden">
+                        <button onClick="{{ l.setUnidad }}" title="Precio por unidad" style="{{ l.unidadStyle }}">U</button>
+                        <button onClick="{{ l.setMayor }}" title="Precio por mayor" style="{{ l.mayorStyle }}">M</button>
+                      </div>
+                    </div>
+                    <label style="display: flex; flex-direction: column; gap: 4px; font-size: 9.5px; font-weight: 700; text-transform: uppercase; color: #7C8C80">Descuento (Bs)
+                      <input value="{{ l.descuento }}" onChange="{{ l.onDescuento }}" style="width: 100%; height: 32px; border: 1px solid #DCE4D6; border-radius: 7px; padding: 0 8px; text-align: right; font-size: 12px; color: #16301F; font-variant-numeric: tabular-nums" />
+                    </label>
+                  </div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 7px; border-top: 1px dashed #DCE4D6">
+                    <span style="font-size: 10.5px; color: #7C8C80">{{ l.precioLabel }} · Bs {{ l.precio }}</span>
+                    <div style="display: flex; align-items: baseline; gap: 5px"><span style="font-size: 10.5px; font-weight: 700; color: #55655B">A pagar</span><strong style="font-family: 'Space Grotesk', sans-serif; font-size: 17px; color: #1F7A3D; font-variant-numeric: tabular-nums">Bs {{ l.subtotal }}</strong></div>
                   </div>
                 </div>
               </sc-for>
             </div>
-
-            <div style="padding: 13px 16px; border-top: 1px solid #EEF2EA; display: flex; flex-direction: column; gap: 9px; background: #FBFCF9">
-              <span style="font-size: 10.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: #7C8C80">Cliente y resumen</span>
-              <label style="display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 12.5px; color: #55655B">Cliente
-                <select value="{{ cliente }}" onChange="{{ onCliente }}" style="width: 214px; height: 32px; border: 1px solid #DCE4D6; border-radius: 8px; background: #FFFFFF; padding: 0 8px; font-size: 12.5px; color: #1B2A20">
-                  <sc-for list="{{ clientesOpts }}" as="c" hint-placeholder-count="3">
-                    <option value="{{ c }}">{{ c }}</option>
-                  </sc-for>
-                </select>
-              </label>
-              <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; color: #55655B"><span>Subtotal</span><span style="font-variant-numeric: tabular-nums">Bs {{ subtotal }}</span></div>
-              <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; color: #55655B">
-                <span>Descuento adicional</span>
-                <input value="{{ descuento }}" onChange="{{ onDescuento }}" style="width: 92px; height: 30px; text-align: right; border: 1px solid #DCE4D6; border-radius: 8px; background: #FFFFFF; padding: 0 9px; font-size: 12.5px; font-variant-numeric: tabular-nums" />
-              </div>
-              <sc-if value="{{ hasLineDesc }}">
-                <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; color: #55655B"><span>Descuento por líneas</span><span style="font-variant-numeric: tabular-nums; color: #E12A2A">− Bs {{ descLineas }}</span></div>
-              </sc-if>
-              <div style="display: flex; align-items: baseline; justify-content: space-between; padding-top: 5px; border-top: 1px dashed #DCE4D6">
-                <span style="font-size: 13px; font-weight: 700; color: #16301F">Total a pagar</span>
-                <span style="font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 700; color: #1F7A3D; font-variant-numeric: tabular-nums">Bs {{ total }}</span>
-              </div>
-
-              <div style="display: flex; flex-direction: column; gap: 7px; padding-top: 3px">
-                <span style="font-size: 10.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: #7C8C80">Cobro</span>
-                <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
-                  <label style="display: flex; flex-direction: column; gap: 5px; font-size: 11px; color: #55655B">Efectivo
-                    <input value="{{ pagoEfectivo }}" onChange="{{ onPagoEfectivo }}" style="height: 36px; border: 1px solid #DCE4D6; border-radius: 9px; background: #FFFFFF; padding: 0 9px; font-size: 13px; font-variant-numeric: tabular-nums; text-align: right" />
-                  </label>
-                  <label style="display: flex; flex-direction: column; gap: 5px; font-size: 11px; color: #55655B">QR
-                    <input value="{{ pagoQr }}" onChange="{{ onPagoQr }}" style="height: 36px; border: 1px solid #DCE4D6; border-radius: 9px; background: #FFFFFF; padding: 0 9px; font-size: 13px; font-variant-numeric: tabular-nums; text-align: right" />
-                  </label>
-                  <label style="display: flex; flex-direction: column; gap: 5px; font-size: 11px; color: #55655B">Transferencia
-                    <input value="{{ pagoTransf }}" onChange="{{ onPagoTransf }}" style="height: 36px; border: 1px solid #DCE4D6; border-radius: 9px; background: #FFFFFF; padding: 0 9px; font-size: 13px; font-variant-numeric: tabular-nums; text-align: right" />
-                  </label>
-                </div>
-                <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; color: #55655B"><span>Total recibido</span><span style="font-variant-numeric: tabular-nums; font-weight: 700; color: #16301F">Bs {{ recibido }}</span></div>
-
-                <div style="{{ saldoStyle }}">
-                  <span>{{ saldoLabel }}</span>
-                  <span style="font-variant-numeric: tabular-nums; font-weight: 700">Bs {{ saldoMonto }}</span>
-                </div>
-              </div>
-
-              <sc-if value="{{ cajaCerrada }}">
-                <div onClick="{{ irCaja }}" style="display: flex; align-items: center; gap: 9px; padding: 10px 12px; border-radius: 10px; background: #FDECEC; border: 1px solid #F6DADA; font-size: 12px; color: #C21F1F; cursor: pointer">No hay sesión de caja abierta. Ábrela en Caja y movimientos para poder cobrar.</div>
-              </sc-if>
-              <button onClick="{{ registrarVenta }}" style="height: 44px; margin-top: 2px; border: none; border-radius: 11px; background: #1F7A3D; color: #FFFFFF; font-size: 14px; font-weight: 700; cursor: pointer" style-hover="background: #2E9E4F">Guardar venta y cobrar</button>
-              <div style="display: flex; gap: 8px">
-                <button onClick="{{ cancelarVenta }}" style="flex: 1; height: 36px; border: 1px solid #DCE4D6; border-radius: 9px; background: #FFFFFF; color: #55655B; font-size: 12.5px; cursor: pointer" style-hover="background: #F6F8F4">Cancelar</button>
-                <button onClick="{{ registrarVenta }}" style="flex: 1; height: 36px; border: 1px solid #DCE4D6; border-radius: 9px; background: #FFFFFF; color: #1F7A3D; font-size: 12.5px; font-weight: 500; cursor: pointer" style-hover="background: #F4F9EA">Guardar e imprimir</button>
-              </div>
+            <div class="sale-continue-bar" style="flex: 0 0 auto; width: 100%; padding: 12px 15px; border-top: 1px solid #E3E9DE; background: #FBFCF9">
+              <button onClick="{{ continuarVenta }}" style="{{ continuarStyle }}" style-hover="background: #2E9E4F">Continuar venta</button>
             </div>
-              </div>
-            </div>
+</aside>
           </sc-if>
-        </div>
-        </div>
+        </div></div>
       </sc-if>
 
+      <sc-if value="{{ checkoutOpen }}">
+        <div class="checkout-overlay" onClick="{{ cerrarCheckout }}" style="position: fixed; inset: 0; z-index: 90; background: rgba(12, 32, 20, .58); padding: 24px; display: flex; align-items: center; justify-content: center; animation: popIn .14s ease">
+          <div class="checkout-shell" onClick="{{ stop }}" style="width: min(1040px, 100%); max-height: calc(100vh - 48px); overflow: hidden; background: #F3F6F0; border-radius: 8px; box-shadow: 0 24px 70px rgba(8, 25, 14, .34); display: grid; grid-template-columns: minmax(0, 1fr) 390px">
+            <section style="min-width: 0; overflow-y: auto; padding: 24px; display: flex; justify-content: center; background: #E8EDE5">
+              <div class="checkout-receipt" style="width: min(100%, 520px); min-height: 680px; background: #FFFFFF; padding: 30px 34px; box-shadow: 0 5px 18px rgba(22, 48, 31, .12); display: flex; flex-direction: column; gap: 18px">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 16px; border-bottom: 2px solid #16301F">
+                  <div style="display: flex; align-items: center; gap: 11px">
+                    <img src="uploads/imagen.png" alt="Nature Bio Sana" style="width: 58px; height: 58px; object-fit: contain" />
+                    <div style="display: flex; flex-direction: column; gap: 2px"><strong style="font-family: 'Space Grotesk', sans-serif; font-size: 18px; color: #16301F">Nature Bio Sana</strong><span style="font-size: 10.5px; color: #7C8C80">{{ tiendaActual }}</span></div>
+                  </div>
+                  <div style="text-align: right"><strong style="display: block; font-size: 14px; color: #16301F">NOTA DE VENTA</strong><span style="font-size: 11px; color: #7C8C80">{{ nextVenta }}</span></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; gap: 18px; font-size: 11.5px; color: #55655B"><span>Cliente: <strong style="color: #16301F">{{ cliente }}</strong></span><span>30/07/2026</span></div>
+                <div style="display: flex; flex-direction: column; gap: 0">
+                  <div style="display: grid; grid-template-columns: minmax(0, 1fr) 44px 74px 82px; gap: 8px; padding: 8px 0; border-bottom: 1px solid #16301F; font-size: 9.5px; font-weight: 700; text-transform: uppercase; color: #55655B"><span>Producto</span><span style="text-align: center">Cant.</span><span style="text-align: right">Precio</span><span style="text-align: right">Importe</span></div>
+                  <sc-for list="{{ cart }}" as="l" hint-placeholder-count="2">
+                    <div style="display: grid; grid-template-columns: minmax(0, 1fr) 44px 74px 82px; gap: 8px; padding: 10px 0; border-bottom: 1px solid #E3E9DE; align-items: start; font-size: 11px; color: #28382D">
+                      <div style="display: flex; flex-direction: column; gap: 2px"><strong>{{ l.nombre }}</strong><span style="font-size: 9.5px; color: #7C8C80">{{ l.codigo }} · {{ l.precioLabel }}</span></div><span style="text-align: center">{{ l.cantidad }}</span><span style="text-align: right">{{ l.precio }}</span><strong style="text-align: right">{{ l.subtotal }}</strong>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="margin-left: auto; width: min(100%, 250px); display: flex; flex-direction: column; gap: 8px; font-size: 11.5px; color: #55655B">
+                  <div style="display: flex; justify-content: space-between"><span>Subtotal</span><span>Bs {{ subtotal }}</span></div>
+                  <sc-if value="{{ hasLineDesc }}"><div style="display: flex; justify-content: space-between"><span>Descuentos de productos</span><span>− Bs {{ descLineas }}</span></div></sc-if>
+                  <div style="display: flex; justify-content: space-between"><span>Descuento adicional</span><span>− Bs {{ descuento }}</span></div>
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; padding-top: 9px; border-top: 2px solid #16301F"><strong style="font-size: 13px; color: #16301F">TOTAL</strong><strong style="font-family: 'Space Grotesk', sans-serif; font-size: 20px; color: #1F7A3D">Bs {{ total }}</strong></div>
+                </div>
+                <div style="margin-top: auto; padding-top: 18px; border-top: 1px solid #E3E9DE; text-align: center; font-size: 10px; color: #7C8C80">Gracias por su compra</div>
+              </div>
+            </section>
+
+            <aside style="min-width: 0; overflow-y: auto; background: #FFFFFF; border-left: 1px solid #DCE4D6; display: flex; flex-direction: column">
+              <div style="padding: 18px 20px; border-bottom: 1px solid #EEF2EA; display: flex; align-items: center; justify-content: space-between"><div><strong style="display: block; font-size: 16px; color: #16301F">Confirmar venta</strong><span style="font-size: 11.5px; color: #7C8C80">Completa los datos para cobrar</span></div><button onClick="{{ cerrarCheckout }}" title="Cerrar" style="width: 32px; height: 32px; border: 1px solid #DCE4D6; border-radius: 7px; background: #FFFFFF; color: #55655B; cursor: pointer; font-size: 14px">×</button></div>
+              <div style="padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+                <label style="display: flex; flex-direction: column; gap: 6px; font-size: 11px; font-weight: 700; color: #55655B">Cliente<select value="{{ cliente }}" onChange="{{ onCliente }}" style="width: 100%; height: 40px; border: 1px solid #DCE4D6; border-radius: 7px; background: #FFFFFF; padding: 0 10px; font-size: 13px; color: #1B2A20"><sc-for list="{{ clientesOpts }}" as="c" hint-placeholder-count="3"><option value="{{ c }}">{{ c }}</option></sc-for></select></label>
+                <label style="display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 12px; color: #55655B"><span>Descuento adicional</span><input value="{{ descuento }}" onChange="{{ onDescuento }}" style="width: 100px; height: 34px; text-align: right; border: 1px solid #DCE4D6; border-radius: 7px; padding: 0 9px; font-size: 13px" /></label>
+                <div style="display: flex; align-items: baseline; justify-content: space-between; padding: 13px 0; border-top: 1px dashed #DCE4D6; border-bottom: 1px dashed #DCE4D6"><strong style="font-size: 13px; color: #16301F">Total a pagar</strong><strong style="font-family: 'Space Grotesk', sans-serif; font-size: 25px; color: #1F7A3D">Bs {{ total }}</strong></div>
+                <span style="font-size: 10.5px; font-weight: 700; text-transform: uppercase; color: #7C8C80">Formas de pago</span>
+                <div style="display: grid; grid-template-columns: 1fr; gap: 9px">
+                  <label style="display: grid; grid-template-columns: 1fr 130px; align-items: center; gap: 10px; font-size: 12px; color: #55655B">Efectivo<input value="{{ pagoEfectivo }}" onChange="{{ onPagoEfectivo }}" style="height: 36px; border: 1px solid #DCE4D6; border-radius: 7px; padding: 0 9px; text-align: right; font-size: 13px" /></label>
+                  <label style="display: grid; grid-template-columns: 1fr 130px; align-items: center; gap: 10px; font-size: 12px; color: #55655B">QR<input value="{{ pagoQr }}" onChange="{{ onPagoQr }}" style="height: 36px; border: 1px solid #DCE4D6; border-radius: 7px; padding: 0 9px; text-align: right; font-size: 13px" /></label>
+                  <label style="display: grid; grid-template-columns: 1fr 130px; align-items: center; gap: 10px; font-size: 12px; color: #55655B">Transferencia<input value="{{ pagoTransf }}" onChange="{{ onPagoTransf }}" style="height: 36px; border: 1px solid #DCE4D6; border-radius: 7px; padding: 0 9px; text-align: right; font-size: 13px" /></label>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; color: #55655B"><span>Total recibido</span><strong style="color: #16301F">Bs {{ recibido }}</strong></div>
+                <div style="{{ saldoStyle }}"><span>{{ saldoLabel }}</span><strong>Bs {{ saldoMonto }}</strong></div>
+                <sc-if value="{{ cajaCerrada }}"><div onClick="{{ irCaja }}" style="padding: 10px 12px; border-radius: 7px; background: #FDECEC; border: 1px solid #F6DADA; font-size: 12px; color: #C21F1F; cursor: pointer">No hay sesión de caja abierta.</div></sc-if>
+                <button onClick="{{ registrarVenta }}" style="height: 44px; border: none; border-radius: 7px; background: #1F7A3D; color: #FFFFFF; font-size: 14px; font-weight: 700; cursor: pointer" style-hover="background: #2E9E4F">Guardar venta y cobrar</button>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px"><button onClick="{{ cerrarCheckout }}" style="height: 36px; border: 1px solid #DCE4D6; border-radius: 7px; background: #FFFFFF; color: #55655B; cursor: pointer">Volver</button><button onClick="{{ registrarVenta }}" style="height: 36px; border: 1px solid #DCE4D6; border-radius: 7px; background: #FFFFFF; color: #1F7A3D; font-weight: 600; cursor: pointer">Guardar e imprimir</button></div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </sc-if>
       <sc-if value="{{ showLotes }}">
         <div style="display: flex; flex-direction: column; gap: 16px">
           <div style="background: #FFFFFF; border: 1px solid #E3E9DE; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 13px">
@@ -1137,8 +1144,8 @@ class Component extends DCLogic {
 
   state = {
     phase: 'login', loginUser: '', loginPass: '', loginError: '', showPass: false, loading: false, tienda: '',
-    mod: 'inicio', sub: 'inicio', query: '', filters: {}, sort: {}, page: {}, dashPeriod: 'dia', dashDate: '2026-07-29', menuActive: false, cartOpen: false,
-    modalOpen: false, editingId: null, form: {}, formErrors: {}, formEnt: null,
+    mod: 'inicio', sub: 'inicio', query: '', filters: {}, sort: {}, page: {}, dashPeriod: 'dia', dashDate: '2026-07-29', menuActive: false, cartOpen: true,
+    modalOpen: false, checkoutOpen: false, editingId: null, form: {}, formErrors: {}, formEnt: null,
     verOpen: false, verRows: [], verTitle: '', confirm: null,
     toast: '', toastKind: 'ok',
     cliente: 'Consumidor final', descuento: '0,00', pagoEfectivo: '0,00', pagoQr: '0,00', pagoTransf: '0,00',
@@ -1255,7 +1262,7 @@ class Component extends DCLogic {
     inicio: { label: 'Parte principal', icon: '◧', tabs: [['inicio', 'Resumen del día']] },
     ventas: { label: 'Venta', icon: '🛒', tabs: [['pos', 'Punto de venta'], ['ventas', 'Ventas registradas'], ['pagos_venta', 'Pagos de venta']] },
     movimientos: { label: 'Movimientos', icon: '▤', tabs: [['caja', 'Caja y movimientos']] },
-    catalogo: { label: 'Producto', icon: '🌿', tabs: [['stock', 'Productos de tienda'], ['productos', 'Producto'], ['categorias', 'Categoría']] },
+    catalogo: { label: 'Inventario', icon: '🌿', tabs: [['stock', 'Productos de tienda'], ['productos', 'Producto'], ['categorias', 'Categoría']] },
     usuarios: { label: 'Usuario', icon: '👤', tabs: [['usuarios', 'Usuarios'], ['roles', 'Roles y permisos']] },
     obligaciones: { label: 'Deuda', icon: '📄', tabs: [['deudaResumen', 'Resumen mensual'], ['obligaciones', 'Obligaciones'], ['pagos_obligacion', 'Pagos realizados'], ['acreedores', 'Acreedores']] },
     tiendas: { label: 'Tienda', icon: '🏬', tabs: [['tiendasCards', 'Tiendas'], ['cajas', 'Cajas']] }
@@ -1268,9 +1275,9 @@ class Component extends DCLogic {
       fields: [['nombre_categoria', 'Nombre categoría', 'text', 1], ['estado', 'Estado', ESTADO, 1], ['descripcion', 'Descripción', 'area', 0, 2]]
     },
     productos: {
-      table: 'producto', sing: 'producto', title: 'Catálogo de productos', hint: 'producto · codigo_producto único, ligado a categoria',
-      cols: [['codigo_producto', 'Código', 'mono'], ['codigo_barra', 'Código de barras', 'mono'], ['nombre_producto', 'Producto'], ['categoria', 'Categoría'], ['descripcion', 'Descripción'], ['imagen', 'Imagen'], ['estado', 'Estado', 'badge']],
-      fields: [['nombre_producto', 'Nombre producto', 'text', 1], ['codigo_producto', 'Código producto', 'text', 1], ['codigo_barra', 'Código de barras', 'text', 0], ['categoria', 'Categoría', 'cats', 1], ['estado', 'Estado', ESTADO, 1], ['imagen', 'Imagen (archivo)', 'text', 0], ['descripcion', 'Descripción', 'area', 0, 2]]
+      table: 'producto', sing: 'producto', title: 'Catálogo de productos', hint: 'Productos identificados por código de barras, ligados a una categoría',
+      cols: [['codigo_barra', 'Código de barras', 'mono'], ['nombre_producto', 'Producto'], ['categoria', 'Categoría'], ['descripcion', 'Descripción'], ['imagen', 'Imagen'], ['estado', 'Estado', 'badge']],
+      fields: [['nombre_producto', 'Nombre producto', 'text', 1], ['codigo_barra', 'Código de barras', 'text', 1], ['categoria', 'Categoría', 'cats', 1], ['estado', 'Estado', ESTADO, 1], ['imagen', 'Imagen (archivo)', 'text', 0], ['descripcion', 'Descripción', 'area', 0, 2]]
     },
     lotes: {
       table: 'lote', sing: 'lote', title: 'Lotes registrados', hint: 'lote · cada ingreso con su costo, precios y vencimiento',
@@ -1435,8 +1442,6 @@ class Component extends DCLogic {
       const barcode = String(form.codigo_barra || '').trim();
       if (barcode && !/^\d+$/.test(barcode)) errs.codigo_barra = 'El código de barras solo puede contener números.';
       if (barcode && this.D.productos.some(p => p.id !== id && String(p.codigo_barra) === barcode)) errs.codigo_barra = 'Este código de barras ya está registrado.';
-      const productCode = String(form.codigo_producto || '').trim().toLowerCase();
-      if (productCode && this.D.productos.some(p => p.id !== id && String(p.codigo_producto).trim().toLowerCase() === productCode)) errs.codigo_producto = 'Este código de producto ya está registrado.';
     }
     if (ent === 'lotes') {
       const initial = num(form.cantidad_inicial), available = num(form.cantidad_disponible);
@@ -1460,7 +1465,7 @@ class Component extends DCLogic {
     if (ent === 'productos' && !id) {
       const productId = Date.now();
       const inventoryId = productId + 1;
-      const product = { id: productId, ...form };
+      const product = { id: productId, codigo_producto: 'PRD-' + String(productId).slice(-8), ...form };
       data.productos = [product, ...data.productos];
       data.inventario = [{
         id: inventoryId, tienda: this.state.tienda, producto: form.nombre_producto,
@@ -1649,6 +1654,7 @@ class Component extends DCLogic {
     const mod = this.MODS[s.mod];
     const isInicio = s.sub === 'inicio';
     const isPos = s.sub === 'pos';
+    v.appContentStyle = { flex: 1, minHeight: 0, overflow: isPos ? 'hidden' : 'auto', padding: '22px 28px 30px' };
     const isStock = s.sub === 'stock';
     const isDual = s.sub === 'dual';
     const isRoles = s.sub === 'roles';
@@ -1674,7 +1680,7 @@ class Component extends DCLogic {
       const on = k === s.mod;
       return {
         label: this.MODS[k].label, icon: this.MODS[k].icon, count: counts[k],
-        go: () => this.setState({ mod: k, sub: this.MODS[k].tabs[0][0], query: '', menuActive: false }),
+        go: () => this.setState({ mod: k, sub: this.MODS[k].tabs[0][0], query: '', menuActive: false, cartOpen: k === 'ventas' ? true : s.cartOpen }),
         style: { display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 11px', borderRadius: '10px', cursor: 'pointer', color: on ? '#FFFFFF' : '#C3D3C6', background: on ? '#1F7A3D' : 'transparent', transition: 'background .12s' },
         badgeStyle: { fontSize: '11px', fontWeight: 700, fontVariantNumeric: 'tabular-nums', color: on ? '#12301F' : '#8FA795', background: on ? '#A6CE39' : '#1B3C27', padding: '2px 7px', borderRadius: '999px' }
       };
@@ -1682,14 +1688,14 @@ class Component extends DCLogic {
     v.tabs = mod.tabs.map(([k, label]) => {
       const on = k === s.sub;
       return {
-        label, go: () => this.setState({ sub: k, query: '' }),
+        label, go: () => this.setState({ sub: k, query: '', cartOpen: k === 'pos' ? true : s.cartOpen }),
         style: { padding: '9px 14px', marginBottom: '-1px', fontSize: '13px', fontWeight: on ? 700 : 500, color: on ? '#1F7A3D' : '#7C8C80', borderBottom: on ? '2px solid #1F7A3D' : '2px solid transparent', cursor: 'pointer', whiteSpace: 'nowrap' }
       };
     });
     v.crumb = s.tienda + ' / ' + mod.label;
     v.title = isInicio ? 'Parte principal' : isPos ? 'Punto de venta' : isStock ? 'Productos de tienda' : isDual ? 'Categorías de producto y de deuda' : isCaja ? 'Caja y movimientos' : isDebtOverview ? 'Resumen mensual de deudas' : ent.title;
     v.desc = isInicio ? ''
-      : isPos ? 'Busca el producto, define la cantidad y cobra. El stock se descuenta del lote que vence primero (FEFO).'
+      : isPos ? 'Busca el producto, define la cantidad y cobra.'
       : isStock ? 'Elige un producto para ver sus lotes, alertas de vencimiento y registrar uno nuevo.'
       : isDual ? 'Dos catálogos independientes: las categorías del producto y las categorías de las deudas.'
       : isDebtOverview ? 'Seguimiento mensual de cuotas, pagos y vencimientos.'
@@ -1699,7 +1705,7 @@ class Component extends DCLogic {
     v.onQuery = e => this.setState({ query: e.target.value, page: { ...s.page, [entKey]: 1 } });
     v.openNew = () => {
       if (isInicio) return this.setState({ mod: 'ventas', sub: 'pos' });
-      if (isPos) return this.setState({ cart: [], sel: null, cartOpen: false, descuento: '0,00', pagoEfectivo: '0,00', pagoQr: '0,00', pagoTransf: '0,00' });
+      if (isPos) return this.setState({ cart: [], sel: null, cartOpen: true, checkoutOpen: false, descuento: '0,00', pagoEfectivo: '0,00', pagoQr: '0,00', pagoTransf: '0,00' });
       if (isStock) return this.openModal('productos');
       if (isDual) return this.openModal('categorias');
       return this.openModal(entKey);
@@ -1743,6 +1749,8 @@ class Component extends DCLogic {
     v.cartOpen = s.cartOpen;
     v.openCart = () => this.setState({ cartOpen: true });
     v.closeCart = () => this.setState({ cartOpen: false });
+    v.toggleCart = () => this.setState({ cartOpen: !s.cartOpen });
+    v.cartToggleTitle = s.cartOpen ? 'Ocultar nota de venta' : 'Mostrar nota de venta';
     v.cartLineCount = s.cart.reduce((a, c) => a + num(c.cantidad), 0);
     v.showLotes = isStock;
     v.showDual = isDual;
@@ -1872,7 +1880,7 @@ class Component extends DCLogic {
       const visibleProducts = storeProducts.filter(p => {
         if (activeCategory !== 'Todas' && p.categoria !== activeCategory) return false;
         const productLots = this.lotesDe(p.nombre_producto);
-        const haystack = [p.nombre_producto, p.codigo_producto, p.codigo_barra, p.categoria]
+        const haystack = [p.nombre_producto, p.codigo_barra, p.categoria]
           .concat(productLots.map(l => l.numero_lote)).join(' ').toLowerCase();
         return !q || haystack.includes(q);
       });
@@ -1881,7 +1889,7 @@ class Component extends DCLogic {
         const rows = productLots.length ? productLots : [null];
         return rows.map(l => ({
           nombre: p.nombre_producto,
-          codigo: p.codigo_producto,
+          codigo: p.codigo_barra,
           categoria: p.categoria,
           imagen: p.imagen || 'Imagen pendiente',
           imagenSrc: './' + (p.imagen || 'uploads/imagen.png'),
@@ -1901,7 +1909,41 @@ class Component extends DCLogic {
     }
     if (isPos) {
       const q = s.query.trim().toLowerCase();
-      const lista = d.productos.filter(p => p.estado === 'ACTIVO' && (!q || (p.nombre_producto + ' ' + p.codigo_producto + ' ' + (p.codigo_barra || '') + ' ' + p.categoria).toLowerCase().includes(q)));
+      v.checkoutOpen = s.checkoutOpen;
+      v.cerrarCheckout = () => this.setState({ checkoutOpen: false });
+      v.continuarVenta = () => {
+        if (!s.cart.length) return this.flash('Agrega al menos un producto para continuar', 'warn');
+        this.setState({ checkoutOpen: true });
+      };
+      v.continuarStyle = {
+        width: '100%', height: '42px', border: 'none', borderRadius: '7px',
+        background: s.cart.length ? '#1F7A3D' : '#AAB7AD', color: '#FFFFFF',
+        fontSize: '13.5px', fontWeight: 700, cursor: s.cart.length ? 'pointer' : 'not-allowed'
+      };
+      const lista = d.productos.filter(p => p.estado === 'ACTIVO' && (!q || (p.nombre_producto + ' ' + (p.codigo_barra || '') + ' ' + p.categoria).toLowerCase().includes(q)));
+      const addProductDirect = p => {
+        const stock = this.stockDe(p.nombre_producto);
+        const lote = this.loteFifo(p.nombre_producto);
+        if (!stock || !lote) return this.flash('Sin stock disponible en ' + s.tienda, 'warn');
+        const cart = s.cart.slice();
+        const i = cart.findIndex(c => c.producto === p.nombre_producto);
+        if (i >= 0) {
+          if (cart[i].cantidad >= stock) return this.flash('Solo hay ' + stock + ' u disponibles', 'warn');
+          cart[i] = { ...cart[i], cantidad: cart[i].cantidad + 1 };
+        } else {
+          cart.push({
+            key: p.nombre_producto,
+            producto: p.nombre_producto,
+            lote: lote.numero_lote,
+            loteId: lote.id,
+            tipo: 'unidad',
+            precio: num(lote.precio_venta_unidad),
+            cantidad: 1,
+            descuento: 0
+          });
+        }
+        this.setState({ cart, sel: null, query: '', cartOpen: true });
+      };
       v.onQuery = e => {
         const value = String(e.target.value || '');
         const barcode = value.trim();
@@ -1912,7 +1954,7 @@ class Component extends DCLogic {
             this.setState({ query: value });
             return this.flash('El producto coincide, pero no tiene stock disponible en ' + s.tienda, 'warn');
           }
-          this.setState({ query: '', sel: exact.nombre_producto, selCantidad: '1', selTipo: 'unidad', selDescuento: '0,00' });
+          addProductDirect(exact);
           return;
         }
         this.setState({ query: value, page: { ...s.page, [entKey]: 1 } });
@@ -1923,65 +1965,62 @@ class Component extends DCLogic {
         const lote = this.loteFifo(p.nombre_producto);
         const on = s.sel === p.nombre_producto;
         return {
-          nombre_producto: p.nombre_producto, codigo_producto: p.codigo_producto, categoria: p.categoria, imagenSrc: './' + (p.imagen || 'uploads/imagen.png'),
+          nombre_producto: p.nombre_producto, codigo_barra: p.codigo_barra, categoria: p.categoria, imagenSrc: './' + (p.imagen || 'uploads/imagen.png'),
           stockLabel: stock > 0 ? stock + ' u' : 'sin stock',
           vence: lote ? dmy(lote.fecha_vencimiento) : '—',
           precio: lote ? money(lote.precio_venta_unidad) : '—',
           mayor: lote ? money(lote.precio_venta_mayor) : '—',
-          cardStyle: { border: '1px solid ' + (on ? '#A6CE39' : '#E3E9DE'), borderRadius: '8px', overflow: 'hidden', cursor: stock > 0 ? 'pointer' : 'not-allowed', display: 'flex', flexDirection: 'column', background: on ? '#F8FBEF' : '#FFFFFF', opacity: stock > 0 ? 1 : .55, transition: 'border-color .14s, box-shadow .14s' },
+          cardStyle: { border: '1px solid ' + (on ? '#A6CE39' : '#E3E9DE'), borderRadius: '8px', overflow: 'hidden', cursor: stock > 0 ? 'pointer' : 'not-allowed', display: 'flex', flexDirection: 'column', background: on ? '#F8FBEF' : '#FFFFFF', minHeight: '284px', height: 'max-content', opacity: stock > 0 ? 1 : .55, transition: 'border-color .14s, box-shadow .14s' },
           stockStyle: { position: 'absolute', top: '9px', right: '9px', fontSize: '10px', fontWeight: 700, whiteSpace: 'nowrap', color: stock > 0 ? '#1F7A3D' : '#E12A2A', background: stock > 0 ? '#EAF4D3' : '#FDECEC', padding: '4px 7px', borderRadius: '999px', boxShadow: '0 1px 4px rgba(22,48,31,.08)' },
-          select: () => {
-            if (!stock) return this.flash('Sin stock disponible en ' + s.tienda);
-            this.setState({ sel: p.nombre_producto, selCantidad: '1', selTipo: 'unidad', selDescuento: '0,00' });
-          }
+          select: () => addProductDirect(p)
         };
       });
 
-      const selLote = s.sel ? this.loteFifo(s.sel) : null;
-      const selDispTotal = s.sel ? this.stockDe(s.sel) : 0;
-      const selPrecio = selLote ? num(s.selTipo === 'mayor' ? selLote.precio_venta_mayor : selLote.precio_venta_unidad) : 0;
-      const selCant = Math.max(1, Math.round(num(s.selCantidad) || 1));
-      const selDesc = num(s.selDescuento);
-      const selProducto = s.sel ? d.productos.find(p => p.nombre_producto === s.sel) : null;
-      v.hasSelection = !!s.sel && !!selLote;
-      v.selNombre = s.sel || '';
-      v.selCodigo = selProducto ? selProducto.codigo_producto : '';
-      v.selVence = selLote ? dmy(selLote.fecha_vencimiento) : '—';
-      v.selLote = selLote ? selLote.numero_lote : '—';
-      v.selDisp = selDispTotal + ' u';
-      v.selCantidad = s.selCantidad;
-      v.selTipo = s.selTipo;
-      v.selDescuento = s.selDescuento;
-      v.selPrecioUnidad = selLote ? money(selLote.precio_venta_unidad) : '0,00';
-      v.selPrecioMayor = selLote ? money(selLote.precio_venta_mayor) : '0,00';
-      v.selSubtotal = money(Math.max(0, selPrecio * selCant - selDesc));
-      v.onSelCantidad = e => this.setState({ selCantidad: e.target.value });
-      v.onSelTipo = e => this.setState({ selTipo: e.target.value });
-      v.onSelDescuento = e => this.setState({ selDescuento: e.target.value });
-      v.selInc = () => this.setState({ selCantidad: String(Math.min(selDispTotal, selCant + 1)) });
-      v.selDec = () => this.setState({ selCantidad: String(Math.max(1, selCant - 1)) });
-      v.clearSel = () => this.setState({ sel: null });
-      v.addLine = () => {
-        if (!selLote) return;
-        if (selCant > selDispTotal) return this.flash('Solo hay ' + selDispTotal + ' u disponibles');
-        const cart = s.cart.slice();
-        const key = s.sel + '|' + s.selTipo;
-        const i = cart.findIndex(c => c.key === key);
-        if (i >= 0) cart[i] = { ...cart[i], cantidad: cart[i].cantidad + selCant, descuento: cart[i].descuento + selDesc };
-        else cart.push({ key, producto: s.sel, lote: selLote.numero_lote, loteId: selLote.id, tipo: s.selTipo, precio: selPrecio, cantidad: selCant, descuento: selDesc });
-        this.setState({ cart, sel: null, selCantidad: '1', selDescuento: '0,00' });
-        this.flash(selCant + ' u de ' + s.sel + ' agregado a la nota');
-      };
 
       const lineSub = c => Math.max(0, c.precio * c.cantidad - c.descuento);
-      v.cart = s.cart.map(c => ({
-        nombre: c.producto,
-        detalle: c.lote + ' · Bs ' + money(c.precio) + (c.tipo === 'mayor' ? ' (mayor)' : '') + (c.descuento ? ' · desc. ' + money(c.descuento) : ''),
-        cantidad: c.cantidad, subtotal: money(lineSub(c)),
-        inc: () => this.setState({ cart: s.cart.map(x => x.key === c.key ? { ...x, cantidad: x.cantidad + 1 } : x) }),
-        dec: () => this.setState({ cart: s.cart.map(x => x.key === c.key ? { ...x, cantidad: Math.max(1, x.cantidad - 1) } : x) }),
-        remove: () => this.setState({ cart: s.cart.filter(x => x.key !== c.key) })
-      }));
+      v.cart = s.cart.map(c => {
+        const product = d.productos.find(p => p.nombre_producto === c.producto);
+        const lot = d.lotes.find(l => l.id === c.loteId);
+        const stock = this.stockDe(c.producto);
+        const setTipo = tipo => {
+          if (!lot) return;
+          const precio = num(tipo === 'mayor' ? lot.precio_venta_mayor : lot.precio_venta_unidad);
+          this.setState({ cart: s.cart.map(x => x.key === c.key ? { ...x, tipo, precio } : x) });
+        };
+        const typeButton = active => ({
+          border: 'none', borderLeft: active ? 'none' : '1px solid #DCE4D6', background: active ? '#1F7A3D' : '#FFFFFF',
+          color: active ? '#FFFFFF' : '#55655B', cursor: 'pointer', fontSize: '11px', fontWeight: 700
+        });
+        return {
+          nombre: c.producto,
+          codigo: product ? product.codigo_barra : '',
+          imagenSrc: './' + (product && product.imagen ? product.imagen : 'uploads/imagen.png'),
+          vence: lot ? dmy(lot.fecha_vencimiento) : '—',
+          cantidad: c.cantidad,
+          descuento: money(c.descuento),
+          precio: money(c.precio),
+          precioLabel: c.tipo === 'mayor' ? 'Precio mayor' : 'Precio unidad',
+          subtotal: money(lineSub(c)),
+          unidadStyle: typeButton(c.tipo === 'unidad'),
+          mayorStyle: typeButton(c.tipo === 'mayor'),
+          setUnidad: () => setTipo('unidad'),
+          setMayor: () => setTipo('mayor'),
+          onCantidad: e => {
+            const cantidad = Math.max(1, Math.min(stock, Math.round(num(e.target.value) || 1)));
+            this.setState({ cart: s.cart.map(x => x.key === c.key ? { ...x, cantidad } : x) });
+          },
+          onDescuento: e => {
+            const descuento = Math.max(0, num(e.target.value));
+            this.setState({ cart: s.cart.map(x => x.key === c.key ? { ...x, descuento } : x) });
+          },
+          inc: () => {
+            if (c.cantidad >= stock) return this.flash('Solo hay ' + stock + ' u disponibles', 'warn');
+            this.setState({ cart: s.cart.map(x => x.key === c.key ? { ...x, cantidad: x.cantidad + 1 } : x) });
+          },
+          dec: () => this.setState({ cart: s.cart.map(x => x.key === c.key ? { ...x, cantidad: Math.max(1, x.cantidad - 1) } : x) }),
+          remove: () => this.setState({ cart: s.cart.filter(x => x.key !== c.key) })
+        };
+      });
       v.cartEmpty = s.cart.length === 0;
       v.lineCount = s.cart.length;
       const bruto = s.cart.reduce((a, c) => a + c.precio * c.cantidad, 0);
@@ -2033,32 +2072,50 @@ class Component extends DCLogic {
           const line = s.cart.find(c => c.loteId === l.id);
           return line ? { ...l, cantidad_disponible: Math.max(0, num(l.cantidad_disponible) - line.cantidad) } : l;
         });
-        data.ventas = [{ id: Date.now(), numero_venta: numV, fecha_hora: '24/07/2026 10:05', cliente: s.cliente, usuario: 'prueba123', subtotal: bruto, descuento_total: descLineas + descExtra, total, estado: 'REGISTRADA' }, ...data.ventas];
+        data.ventas = [{ id: Date.now(), numero_venta: numV, fecha_hora: '30/07/2026 10:05', cliente: s.cliente, usuario: 'prueba123', subtotal: bruto, descuento_total: descLineas + descExtra, total, estado: 'REGISTRADA' }, ...data.ventas];
         const pagos = [];
         if (num(s.pagoEfectivo) > 0) pagos.push({ id: Date.now() + 1, venta: numV, forma_pago: 'Efectivo', monto: Math.min(num(s.pagoEfectivo), total), referencia: '', afecta_efectivo: 'SÍ' });
         if (num(s.pagoQr) > 0) pagos.push({ id: Date.now() + 2, venta: numV, forma_pago: 'QR Simple', monto: num(s.pagoQr), referencia: 'QR-' + Math.floor(Math.random() * 90000 + 10000), afecta_efectivo: 'NO' });
         if (num(s.pagoTransf) > 0) pagos.push({ id: Date.now() + 3, venta: numV, forma_pago: 'Transferencia', monto: num(s.pagoTransf), referencia: 'BNB-' + Math.floor(Math.random() * 900000 + 100000), afecta_efectivo: 'NO' });
         data.pagos_venta = pagos.concat(data.pagos_venta);
         if (num(s.pagoEfectivo) > 0) {
-          data.movimientos = [{ id: Date.now() + 4, fecha_hora: '24/07/2026 10:05', tipo_movimiento: 'INGRESO_VENTA', concepto: 'Venta ' + numV + ' (efectivo)', monto: Math.min(num(s.pagoEfectivo), total), usuario: 'prueba123', referencia: numV, estado: 'REGISTRADO' }].concat(data.movimientos);
+          data.movimientos = [{ id: Date.now() + 4, fecha_hora: '30/07/2026 10:05', tipo_movimiento: 'INGRESO_VENTA', concepto: 'Venta ' + numV + ' (efectivo)', monto: Math.min(num(s.pagoEfectivo), total), usuario: 'prueba123', referencia: numV, estado: 'REGISTRADO' }].concat(data.movimientos);
         }
-        this.setState({ data, cart: [], sel: null, cartOpen: false, descuento: '0,00', pagoEfectivo: '0,00', pagoQr: '0,00', pagoTransf: '0,00' });
+        this.setState({ data, cart: [], sel: null, cartOpen: true, checkoutOpen: false, descuento: '0,00', pagoEfectivo: '0,00', pagoQr: '0,00', pagoTransf: '0,00' });
         this.flash('Venta ' + numV + ' registrada por Bs ' + money(total) + (falta < -0.005 ? ' · cambio Bs ' + money(-falta) : ''), 'ok');
       };
-      v.cancelarVenta = () => { this.setState({ cart: [], sel: null, cartOpen: false, descuento: '0,00', pagoEfectivo: '0,00', pagoQr: '0,00', pagoTransf: '0,00' }); this.flash('Nota de venta cancelada', 'warn'); };
+      v.cancelarVenta = () => { this.setState({ cart: [], sel: null, cartOpen: true, checkoutOpen: false, descuento: '0,00', pagoEfectivo: '0,00', pagoQr: '0,00', pagoTransf: '0,00' }); this.flash('Nota de venta cancelada', 'warn'); };
 
-      const ventasHoy = d.ventas.filter(x => x.estado === 'REGISTRADA' && x.fecha_hora.startsWith('24/07'));
+      const ventasHoy = d.ventas.filter(x => x.estado === 'REGISTRADA' && x.fecha_hora.startsWith('30/07'));
       const totalHoy = ventasHoy.reduce((a, x) => a + num(x.total), 0);
       const cuotaDiaria = d.obligaciones
         .filter(o => o.estado === 'ACTIVA')
         .reduce((a, o) => a + num(o.monto_referencia) / (o.periodicidad === 'SEMANAL' ? 7 : o.periodicidad === 'ANUAL' ? 365 : 30), 0);
-      const dS = t => ({ fontSize: '11.5px', fontWeight: 500, color: t });
+      const valueS = color => ({ fontFamily: "'Space Grotesk', sans-serif", fontSize: '20px', fontWeight: 700, color, fontVariantNumeric: 'tabular-nums' });
+      const counterS = { flex: '0 0 auto', padding: '3px 7px', borderRadius: '999px', background: '#EAF4D3', color: '#1F7A3D', fontSize: '10.5px', fontWeight: 700, whiteSpace: 'nowrap' };
+      const cuotaSuperada = totalHoy >= cuotaDiaria;
       v.kpis = [
-        { label: 'Ventas realizadas hoy', value: String(ventasHoy.length), delta: 'Total vendido Bs ' + money(totalHoy), deltaStyle: dS('#7C8C80') },
-        { label: 'Cuota diaria por cubrir', value: 'Bs ' + money(cuotaDiaria), delta: 'Calculada según obligaciones activas', deltaStyle: dS('#9A6B00') },
-        { label: 'Efectivo inicial de caja', value: 'Bs ' + money(300), delta: 'Apertura de CAJA-01 a las 08:15', deltaStyle: dS('#1F7A3D') }
-      ];
-    }
+        {
+          label: 'Ventas realizadas',
+          showCounter: true,
+          counter: ventasHoy.length + (ventasHoy.length === 1 ? ' venta' : ' ventas'),
+          counterStyle: counterS,
+          value: 'Bs ' + money(totalHoy),
+          valueStyle: valueS(cuotaSuperada ? '#1F7A3D' : '#C62828'),
+        },
+        {
+          label: 'Cuota diaria por cubrir',
+          showCounter: false,
+          value: 'Bs ' + money(cuotaDiaria),
+          valueStyle: valueS('#C62828')
+        },
+        {
+          label: 'Efectivo inicial de caja',
+          showCounter: false,
+          value: 'Bs ' + money(300),
+          valueStyle: valueS('#B78300')
+        }
+      ];    }
 
     if (isDebtOverview) {
       const periodKey = '2026-07';
@@ -2230,7 +2287,7 @@ class Component extends DCLogic {
         const cajas = d.cajas.filter(c => c.tienda === t.nombre_tienda).length;
         const usus = d.usuarios.filter(u => String(u.tiendas_asignadas).indexOf(t.nombre_tienda.split(' · ')[0]) >= 0 || u.tiendas_asignadas === 'Todas').length;
         const stock = d.lotes.filter(l => l.tienda === t.nombre_tienda).reduce((a, l) => a + num(l.cantidad_disponible), 0);
-        const ventasDia = t.nombre_tienda === s.tienda ? d.ventas.filter(x => x.estado === 'REGISTRADA' && x.fecha_hora.startsWith('24/07')).reduce((a, x) => a + num(x.total), 0) : 0;
+        const ventasDia = t.nombre_tienda === s.tienda ? d.ventas.filter(x => x.estado === 'REGISTRADA' && x.fecha_hora.startsWith('30/07')).reduce((a, x) => a + num(x.total), 0) : 0;
         return {
           nombre_tienda: t.nombre_tienda, codigo_tienda: t.codigo_tienda, direccion: t.direccion, telefono: t.telefono, estado: t.estado,
           stats: [['Cajas', String(cajas)], ['Usuarios', String(usus)], ['Stock total', stock + ' u'], ['Ventas del día', 'Bs ' + money(ventasDia)]].map(x => ({ label: x[0], value: x[1] })),
