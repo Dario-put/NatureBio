@@ -533,6 +533,39 @@
           </div>          <sc-if value="{{ noStoreProducts }}"><div style="padding: 44px 20px; border: 1px dashed #DCE4D6; border-radius: 12px; background: #FFFFFF; text-align: center; color: #7C8C80">No hay productos para esta categoría o búsqueda.</div></sc-if>
         </div>
       </sc-if>
+      <sc-if value="{{ showLanding }}">
+        <div style="display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);gap:18px;align-items:start">
+          <div style="display:flex;flex-direction:column;gap:18px">
+            <div style="background:#fff;border:1px solid #E3E9DE;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:16px">
+              <div><div style="font-size:16px;font-weight:700;color:#16301F">Contenido principal</div><div style="font-size:12px;color:#7C8C80;margin-top:3px">Los cambios actualizan el hero público de la landing.</div></div>
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:#55655B">Etiqueta superior<input value="{{ landingEyebrow }}" onChange="{{ e => changeLanding('eyebrow', e) }}" style="height:42px;border:1px solid #DCE4D6;border-radius:10px;padding:0 12px;background:#FAFCF8" /></label>
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:#55655B">Título principal<input value="{{ landingTitle }}" onChange="{{ e => changeLanding('title', e) }}" style="height:42px;border:1px solid #DCE4D6;border-radius:10px;padding:0 12px;background:#FAFCF8" /></label>
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:#55655B">Descripción<textarea value="{{ landingDescription }}" onChange="{{ e => changeLanding('description', e) }}" rows="4" style="border:1px solid #DCE4D6;border-radius:10px;padding:11px 12px;background:#FAFCF8;resize:vertical"></textarea></label>
+            </div>
+            <div style="background:#fff;border:1px solid #E3E9DE;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;justify-content:space-between;gap:16px;align-items:end"><div><div style="font-size:16px;font-weight:700;color:#16301F">Carrusel de descuentos</div><div style="font-size:12px;color:#7C8C80;margin-top:3px">Selecciona cualquier cantidad de productos.</div></div><label style="font-size:11px;font-weight:700;color:#55655B">Descuento %<input type="number" min="1" max="90" value="{{ discountPercent }}" onChange="{{ e => changeLanding('discountPercent', e) }}" style="display:block;width:86px;height:38px;margin-top:5px;border:1px solid #DCE4D6;border-radius:9px;padding:0 10px" /></label></div>
+              <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px">
+                <sc-for list="{{ discountProducts }}" as="p"><label style="display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #E3E9DE;border-radius:11px;cursor:pointer"><input type="checkbox" checked="{{ p.checked }}" onChange="{{ p.toggle }}" /><img src="{{ p.imagen }}" style="width:42px;height:42px;object-fit:contain" /><span style="min-width:0;display:flex;flex-direction:column"><b style="font-size:11px;color:#16301F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.nombre_producto }}</b><span style="font-size:10px;color:#1F7A3D">Bs {{ p.price }}</span></span></label></sc-for>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:18px;position:sticky;top:0">
+            <div style="background:#12301F;color:#fff;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:14px"><div style="font-size:16px;font-weight:700">Categorías destacadas</div><div style="font-size:12px;color:#AFC3B4">Aparecerán como un apartado independiente debajo de “Todos los productos”.</div><sc-for list="{{ featuredCats }}" as="c"><label style="display:flex;align-items:flex-start;gap:10px;padding:12px;border:1px solid #31543A;border-radius:11px;cursor:pointer"><input type="checkbox" checked="{{ c.checked }}" onChange="{{ c.toggle }}" /><span><b style="display:block;font-size:12px">{{ c.nombre_categoria }}</b><span style="font-size:10.5px;color:#9FB6A6">{{ c.descripcion }}</span></span></label></sc-for></div>
+            <div style="background:#fff;border:1px solid #E3E9DE;border-radius:16px;padding:20px"><div style="font-size:11px;font-weight:700;color:#1F7A3D;text-transform:uppercase;letter-spacing:.1em">Vista previa</div><h2 style="margin:9px 0 8px;font-family:'Space Grotesk',sans-serif;font-size:28px;color:#16301F">{{ landingTitle }}</h2><p style="margin:0;color:#7C8C80;font-size:12px;line-height:1.6">{{ landingDescription }}</p><div style="display:flex;gap:9px;margin-top:18px"><button onClick="{{ saveLanding }}" style="height:40px;padding:0 16px;border:0;border-radius:10px;background:#1F7A3D;color:#fff;font-weight:700;cursor:pointer">Guardar y publicar</button><button onClick="{{ openLanding }}" style="height:40px;padding:0 16px;border:1px solid #DCE4D6;border-radius:10px;background:#fff;color:#55655B;font-weight:700;cursor:pointer">Ver landing ↗</button></div></div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ showLanding }}">
+        <div style="margin-top:18px;background:#FFFFFF;border:1px solid #E3E9DE;border-radius:16px;overflow:hidden">
+          <div style="height:48px;padding:0 16px;background:#F7F9F5;border-bottom:1px solid #E3E9DE;display:flex;align-items:center;justify-content:space-between;gap:14px">
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:#1F7A3D"></span><strong style="font-size:12px;color:#16301F">Vista previa interactiva de landing.html</strong></div>
+            <span style="font-size:10.5px;color:#7C8C80">Los cambios de los campos se muestran aquí antes de guardar</span>
+          </div>
+          <iframe id="landingPreviewFrame" src="./landing.html" title="Vista previa de la landing page" onLoad="{{ loadLandingPreview }}" style="display:block;width:100%;height:760px;border:0;background:#FFFFFF"></iframe>
+        </div>
+      </sc-if>
+
       <sc-if value="{{ showInicio }}">
         <div style="display: flex; flex-direction: column; gap: 16px">
           <div style="display: flex; align-items: flex-end; justify-content: flex-end; gap: 16px; flex-wrap: wrap">
@@ -1035,6 +1068,11 @@ const ESTADO = ['ACTIVO', 'INACTIVO'];
 const FORMAS = ['Efectivo', 'QR Simple', 'Transferencia', 'Tarjeta'];
 const USUARIOS = ['prueba123', 'M. Gutiérrez', 'A. Peña'];
 const HOY = '2026-07-29';
+const LANDING_DEFAULTS = { eyebrow: 'Bienestar natural', title: 'Cuida de ti, todos los días.', description: 'Suplementos, colágenos y plantas seleccionadas para acompañar tu rutina.', discountIds: [3, 5, 8], discountPercent: 15, featuredCategories: [1, 2, 3] };
+const readLandingConfig = () => {
+  try { return { ...LANDING_DEFAULTS, ...JSON.parse(localStorage.getItem('natureBioLandingConfig') || '{}') }; }
+  catch (e) { return { ...LANDING_DEFAULTS }; }
+};
 
 class Component extends DCLogic {
   SEED = {
@@ -1145,6 +1183,7 @@ class Component extends DCLogic {
   state = {
     phase: 'login', loginUser: '', loginPass: '', loginError: '', showPass: false, loading: false, tienda: '',
     mod: 'inicio', sub: 'inicio', query: '', filters: {}, sort: {}, page: {}, dashPeriod: 'dia', dashDate: '2026-07-29', menuActive: false, cartOpen: true,
+    landingConfig: readLandingConfig(),
     modalOpen: false, checkoutOpen: false, editingId: null, form: {}, formErrors: {}, formEnt: null,
     verOpen: false, verRows: [], verTitle: '', confirm: null,
     toast: '', toastKind: 'ok',
@@ -1259,6 +1298,7 @@ class Component extends DCLogic {
   }
 
   MODS = {
+    landing: { label: 'Landing workspace', icon: '◆', tabs: [['landingEditor', 'Contenido y promociones']] },
     inicio: { label: 'Parte principal', icon: '◧', tabs: [['inicio', 'Resumen del día']] },
     ventas: { label: 'Venta', icon: '🛒', tabs: [['pos', 'Punto de venta'], ['ventas', 'Ventas registradas'], ['pagos_venta', 'Pagos de venta']] },
     movimientos: { label: 'Movimientos', icon: '▤', tabs: [['caja', 'Caja y movimientos']] },
@@ -1654,6 +1694,7 @@ class Component extends DCLogic {
     const mod = this.MODS[s.mod];
     const isInicio = s.sub === 'inicio';
     const isPos = s.sub === 'pos';
+    const isLanding = s.sub === 'landingEditor';
     v.appContentStyle = { flex: 1, minHeight: 0, overflow: isPos ? 'hidden' : 'auto', padding: '22px 28px 30px' };
     const isStock = s.sub === 'stock';
     const isDual = s.sub === 'dual';
@@ -1663,12 +1704,12 @@ class Component extends DCLogic {
     const isDebtOverview = s.sub === 'deudaResumen';
     const MAP = { tiendasCards: 'tiendas', caja: 'movimientos' };
     const entKey = MAP[s.sub] || s.sub;
-    const ent = isInicio || isPos || isStock || isDual || isDebtOverview ? null : this.ENT[entKey];
+    const ent = isLanding ? { title: 'Landing workspace', hint: 'Edita el contenido público y las promociones.' } : (isInicio || isPos || isStock || isDual || isDebtOverview ? null : this.ENT[entKey]);
     v.entKey = entKey;
 
     const invRows = d.inventario.filter(i => i.tienda === s.tienda).map(i => ({ ...i, stock_actual: this.stockDe(i.producto) }));
     const counts = {
-      inicio: '', ventas: d.ventas.length, movimientos: d.movimientos.length,
+      inicio: '', landing: '', ventas: d.ventas.length, movimientos: d.movimientos.length,
       catalogo: d.productos.length, usuarios: d.usuarios.length,
       obligaciones: d.cuotas.filter(c => c.estado !== 'PAGADA').length, tiendas: d.tiendas.length
     };
@@ -1711,8 +1752,23 @@ class Component extends DCLogic {
       return this.openModal(entKey);
     };
     v.showInicio = isInicio;
+    v.showLanding = isLanding;
+    if (isLanding) {
+      const cfg = s.landingConfig;
+      const priceOf = name => { const lot = this.loteFifo(name); return lot ? num(lot.precio_venta_unidad) : 0; };
+      const payloadFor = next => ({ ...next, products: d.productos, categories: d.categorias, prices: Object.fromEntries(d.productos.map(p => [p.id, priceOf(p.nombre_producto)])) });
+      const pushPreview = (next, persist = false) => setTimeout(() => { const frame = document.getElementById('landingPreviewFrame'); if (frame && frame.contentWindow) frame.contentWindow.postMessage({ type: 'NATURE_BIO_LANDING_PREVIEW', config: payloadFor(next), persist }, '*'); }, 0);
+      v.landingEyebrow = cfg.eyebrow; v.landingTitle = cfg.title; v.landingDescription = cfg.description; v.discountPercent = cfg.discountPercent;
+      v.changeLanding = (key, e) => { const next = { ...cfg, [key]: e.target.value }; this.setState({ landingConfig: next }); pushPreview(next); };
+      v.discountProducts = d.productos.filter(p => p.estado === 'ACTIVO').map(p => ({ ...p, price: money(priceOf(p.nombre_producto)), checked: cfg.discountIds.includes(p.id), toggle: () => { const ids = cfg.discountIds.includes(p.id) ? cfg.discountIds.filter(id => id !== p.id) : [...cfg.discountIds, p.id]; const next = { ...cfg, discountIds: ids }; this.setState({ landingConfig: next }); pushPreview(next); } }));
+      v.featuredCats = d.categorias.filter(c => c.estado === 'ACTIVO').map(c => ({ ...c, checked: cfg.featuredCategories.includes(c.id), toggle: () => { const ids = cfg.featuredCategories.includes(c.id) ? cfg.featuredCategories.filter(id => id !== c.id) : [...cfg.featuredCategories, c.id]; const next = { ...cfg, featuredCategories: ids }; this.setState({ landingConfig: next }); pushPreview(next); } }));
+      v.saveLanding = () => { try { localStorage.setItem('natureBioLandingConfig', JSON.stringify({ ...cfg, products: d.productos, categories: d.categorias, prices: Object.fromEntries(d.productos.map(p => [p.id, priceOf(p.nombre_producto)])) })); } catch(e) {} this.flash('Landing actualizada y vinculada con el catálogo', 'ok'); };
+      v.saveLanding = () => { try { localStorage.setItem('natureBioLandingConfig', JSON.stringify(payloadFor(cfg))); } catch(e) {} pushPreview(cfg, true); this.flash('Cambios guardados. La landing ya está actualizada.', 'ok'); };
+      v.loadLandingPreview = () => pushPreview(cfg);
+      v.openLanding = () => window.open('./landing.html', '_blank');
+    }
     v.showPageHeading = false;
-    v.showNewButton = !isInicio;
+    v.showNewButton = !isInicio && !isLanding;
     const createActions = {
       productos: { ent: 'productos', label: 'Nuevo producto' },
       categorias: { ent: 'categorias', label: 'Nueva categoría' },
@@ -1757,7 +1813,7 @@ class Component extends DCLogic {
     v.showRoles = isRoles;
     v.showCards = isCards;
     v.showDebtOverview = isDebtOverview;
-    v.showTable = !isInicio && !isPos && !isStock && !isDual && !isCards && !isDebtOverview;
+    v.showTable = !isInicio && !isLanding && !isPos && !isStock && !isDual && !isCards && !isDebtOverview;
     v.userName = 'Prueba Demo';
     v.userRol = 'Cajero';
     v.cajaEstado = s.cajaAbierta ? 'CAJA-01 abierta' : 'Sin sesión de caja';
@@ -1793,7 +1849,7 @@ class Component extends DCLogic {
     v.saveForm = () => this.saveForm();
     v.saveLabel = s.editingId ? 'Guardar cambios' : 'Crear registro';
 
-    if (ent) {
+    if (ent && !isLanding) {
       const key = v.entKey;
       const q = s.query.trim().toLowerCase();
       const source = this.sourceFor(key, invRows);
