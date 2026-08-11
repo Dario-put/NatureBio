@@ -149,7 +149,7 @@
     <div class="login-brand" style="display: flex; align-items: center; justify-content: center; padding: 46px 52px; background: linear-gradient(160deg, #12301F 0%, #1B4A2B 100%)">
       <div style="display: flex; align-items: center; gap: 12px">
         <div style="width: 160px; height: 160px; border-radius: 24px; background: #FFFFFF; display: flex; align-items: center; justify-content: center">
-          <img src="uploads/imagen.png" alt="Nature Bio Sana" style="width: 145px; height: 145px; object-fit: contain" />
+          <img src="uploads/imagen.png" alt="Nature Bio Sana" style="width: 190px; height: 190px; padding: 5px; object-fit: contain; object-position: center; border: 1px solid rgba(255,255,255,.38); border-radius: 24px; background: #FFFFFF; box-shadow: 0 18px 42px rgba(0,0,0,.22)" />
         </div>
         <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 60px; line-height: 1.1; color: #FFFFFF">Nature Bio Sana</span>
       </div>
@@ -194,8 +194,8 @@
 <sc-if value="{{ showTiendas }}">
   <div style="height: 100vh; min-height: 720px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px; padding: 40px; background: #F6F8F4">
     <div style="display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center">
-      <div style="width: 52px; height: 52px; border-radius: 15px; background: #FFFFFF; border: 1px solid #E3E9DE; display: flex; align-items: center; justify-content: center">
-        <img src="uploads/imagen.png" alt="Nature Bio Sana" style="width: 44px; height: 44px; object-fit: contain" />
+      <div style="width: 64px; height: 64px; padding: 2px; border-radius: 16px; background: #FFFFFF; border: 1px solid #DCE6D8; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 7px 18px rgba(18,48,31,.12)">
+        <img src="uploads/imagen.png" alt="Nature Bio Sana" style="width: 58px; height: 58px; object-fit: contain; object-position: center" />
       </div>
       <h1 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 27px; font-weight: 700; color: #16301F; letter-spacing: -0.5px">Selecciona una tienda</h1>
       <span style="font-size: 13.5px; color: #7C8C80">Hola Prueba · tu usuario está habilitado en las tiendas de la tabla <code style="font-family: ui-monospace, monospace; color: #1F7A3D">usuario_tienda</code></span>
@@ -225,8 +225,8 @@
 
   <aside class="app-sidebar {{ menuClass }}" style="width: 262px; flex: 0 0 262px; background: #12301F; color: #EAF2E4; display: flex; flex-direction: column; padding: 20px 14px">
     <div class="menu-brand" onClick="{{ toggleMenu }}" title="Mostrar u ocultar menú" style="display: flex; align-items: center; gap: 11px; padding: 4px 8px 18px 8px; cursor: pointer">
-      <div style="width: 42px; height: 42px; border-radius: 12px; background: #FFFFFF; display: flex; align-items: center; justify-content: center; overflow: hidden; flex: 0 0 42px">
-        <img src="uploads/imagen.png" alt="Nature Bio Sana" style="width: 40px; height: 40px; object-fit: contain" />
+      <div style="width: 56px; height: 56px; padding: 2px; border-radius: 14px; background: #FFFFFF; border: 1px solid rgba(255,255,255,.3); display: flex; align-items: center; justify-content: center; overflow: hidden; flex: 0 0 56px; box-shadow: 0 8px 20px rgba(0,0,0,.2)">
+        <img src="uploads/imagen.png" alt="Nature Bio Sana" style="width: 54px; height: 54px; object-fit: contain; object-position: center" />
       </div>
       <div class="menu-copy" style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
         <div style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: -0.2px; color: #FFFFFF">Nature Bio Sana</div>
@@ -439,7 +439,7 @@
               <div class="checkout-receipt" style="width: min(100%, 520px); min-height: 680px; background: #FFFFFF; padding: 30px 34px; box-shadow: 0 5px 18px rgba(22, 48, 31, .12); display: flex; flex-direction: column; gap: 18px">
                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 16px; border-bottom: 2px solid #16301F">
                   <div style="display: flex; align-items: center; gap: 11px">
-                    <img src="uploads/imagen.png" alt="Nature Bio Sana" style="width: 58px; height: 58px; object-fit: contain" />
+                    <img src="uploads/imagen.png" alt="Nature Bio Sana" style="width: 58px; height: 58px; padding: 2px; object-fit: contain; border: 1px solid #DCE6D8; border-radius: 12px; background: #FFFFFF; box-shadow: 0 5px 12px rgba(18,48,31,.1)" />
                     <div style="display: flex; flex-direction: column; gap: 2px"><strong style="font-family: 'Space Grotesk', sans-serif; font-size: 18px; color: #16301F">Nature Bio Sana</strong><span style="font-size: 10.5px; color: #7C8C80">{{ tiendaActual }}</span></div>
                   </div>
                   <div style="text-align: right"><strong style="display: block; font-size: 14px; color: #16301F">NOTA DE VENTA</strong><span style="font-size: 11px; color: #7C8C80">{{ nextVenta }}</span></div>
@@ -534,35 +534,28 @@
         </div>
       </sc-if>
       <sc-if value="{{ showLanding }}">
-        <div style="display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);gap:18px;align-items:start">
-          <div style="display:flex;flex-direction:column;gap:18px">
-            <div style="background:#fff;border:1px solid #E3E9DE;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:16px">
-              <div><div style="font-size:16px;font-weight:700;color:#16301F">Contenido principal</div><div style="font-size:12px;color:#7C8C80;margin-top:3px">Los cambios actualizan el hero público de la landing.</div></div>
-              <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:#55655B">Etiqueta superior<input value="{{ landingEyebrow }}" onChange="{{ e => changeLanding('eyebrow', e) }}" style="height:42px;border:1px solid #DCE4D6;border-radius:10px;padding:0 12px;background:#FAFCF8" /></label>
-              <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:#55655B">Título principal<input value="{{ landingTitle }}" onChange="{{ e => changeLanding('title', e) }}" style="height:42px;border:1px solid #DCE4D6;border-radius:10px;padding:0 12px;background:#FAFCF8" /></label>
-              <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:#55655B">Descripción<textarea value="{{ landingDescription }}" onChange="{{ e => changeLanding('description', e) }}" rows="4" style="border:1px solid #DCE4D6;border-radius:10px;padding:11px 12px;background:#FAFCF8;resize:vertical"></textarea></label>
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <div style="background:#fff;border:1px solid #E3E9DE;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:15px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap"><div><div style="font-size:16px;font-weight:700;color:#16301F">Anuncios del carrusel</div><div style="font-size:12px;color:#7C8C80;margin-top:3px">Carga, reemplaza o elimina hasta 3 imágenes. Se publican en el orden mostrado.</div></div><button onClick="{{ addBanner }}" disabled="{{ bannerLimit }}" style="height:38px;padding:0 14px;border:0;border-radius:9px;background:#1F7A3D;color:#fff;font-size:12px;font-weight:700;cursor:pointer;opacity:{{ bannerAddOpacity }}">+ Agregar anuncio</button></div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:12px">
+              <sc-for list="{{ bannerRows }}" as="b"><div style="padding:13px;border:1px solid #E3E9DE;border-radius:12px;display:flex;flex-direction:column;gap:10px"><div style="height:150px;border-radius:9px;background:#F7F9F5;display:grid;place-items:center;overflow:hidden"><img src="{{ b.src }}" alt="Anuncio" style="width:100%;height:100%;object-fit:contain" /></div><label style="font-size:10.5px;font-weight:700;color:#55655B">Ruta o URL<input value="{{ b.src }}" onChange="{{ b.change }}" placeholder="uploads/Anuncio.jpg" style="width:100%;height:36px;margin-top:5px;border:1px solid #DCE4D6;border-radius:8px;padding:0 9px;background:#FAFCF8;font-size:11px" /></label><label style="height:34px;display:grid;place-items:center;border:1px dashed #AFC2AD;border-radius:8px;color:#1F7A3D;font-size:11px;font-weight:700;cursor:pointer">Reemplazar desde archivo<input type="file" accept="image/*" onChange="{{ b.upload }}" style="display:none" /></label><button onClick="{{ b.remove }}" style="height:33px;border:1px solid #F0CCCC;border-radius:8px;background:#FFF7F7;color:#C73333;font-size:11px;font-weight:700;cursor:pointer">Eliminar anuncio</button></div></sc-for>
             </div>
-            <div style="background:#fff;border:1px solid #E3E9DE;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:14px">
-              <div style="display:flex;justify-content:space-between;gap:16px;align-items:end"><div><div style="font-size:16px;font-weight:700;color:#16301F">Carrusel de descuentos</div><div style="font-size:12px;color:#7C8C80;margin-top:3px">Selecciona cualquier cantidad de productos.</div></div><label style="font-size:11px;font-weight:700;color:#55655B">Descuento %<input type="number" min="1" max="90" value="{{ discountPercent }}" onChange="{{ e => changeLanding('discountPercent', e) }}" style="display:block;width:86px;height:38px;margin-top:5px;border:1px solid #DCE4D6;border-radius:9px;padding:0 10px" /></label></div>
-              <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px">
-                <sc-for list="{{ discountProducts }}" as="p"><label style="display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #E3E9DE;border-radius:11px;cursor:pointer"><input type="checkbox" checked="{{ p.checked }}" onChange="{{ p.toggle }}" /><img src="{{ p.imagen }}" style="width:42px;height:42px;object-fit:contain" /><span style="min-width:0;display:flex;flex-direction:column"><b style="font-size:11px;color:#16301F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.nombre_producto }}</b><span style="font-size:10px;color:#1F7A3D">Bs {{ p.price }}</span></span></label></sc-for>
-              </div>
-            </div>
+            <sc-if value="{{ noBanners }}"><div style="padding:24px;border:1px dashed #DCE4D6;border-radius:11px;text-align:center;color:#7C8C80;font-size:12px">No hay anuncios publicados. Puedes agregar hasta tres.</div></sc-if>
           </div>
-          <div style="display:flex;flex-direction:column;gap:18px;position:sticky;top:0">
-            <div style="background:#12301F;color:#fff;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:14px"><div style="font-size:16px;font-weight:700">Categorías destacadas</div><div style="font-size:12px;color:#AFC3B4">Aparecerán como un apartado independiente debajo de “Todos los productos”.</div><sc-for list="{{ featuredCats }}" as="c"><label style="display:flex;align-items:flex-start;gap:10px;padding:12px;border:1px solid #31543A;border-radius:11px;cursor:pointer"><input type="checkbox" checked="{{ c.checked }}" onChange="{{ c.toggle }}" /><span><b style="display:block;font-size:12px">{{ c.nombre_categoria }}</b><span style="font-size:10.5px;color:#9FB6A6">{{ c.descripcion }}</span></span></label></sc-for></div>
-            <div style="background:#fff;border:1px solid #E3E9DE;border-radius:16px;padding:20px"><div style="font-size:11px;font-weight:700;color:#1F7A3D;text-transform:uppercase;letter-spacing:.1em">Vista previa</div><h2 style="margin:9px 0 8px;font-family:'Space Grotesk',sans-serif;font-size:28px;color:#16301F">{{ landingTitle }}</h2><p style="margin:0;color:#7C8C80;font-size:12px;line-height:1.6">{{ landingDescription }}</p><div style="display:flex;gap:9px;margin-top:18px"><button onClick="{{ saveLanding }}" style="height:40px;padding:0 16px;border:0;border-radius:10px;background:#1F7A3D;color:#fff;font-weight:700;cursor:pointer">Guardar y publicar</button><button onClick="{{ openLanding }}" style="height:40px;padding:0 16px;border:1px solid #DCE4D6;border-radius:10px;background:#fff;color:#55655B;font-weight:700;cursor:pointer">Ver landing ↗</button></div></div>
-          </div>
-        </div>
-      </sc-if>
 
-      <sc-if value="{{ showLanding }}">
-        <div style="margin-top:18px;background:#FFFFFF;border:1px solid #E3E9DE;border-radius:16px;overflow:hidden">
-          <div style="height:48px;padding:0 16px;background:#F7F9F5;border-bottom:1px solid #E3E9DE;display:flex;align-items:center;justify-content:space-between;gap:14px">
-            <div style="display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:#1F7A3D"></span><strong style="font-size:12px;color:#16301F">Vista previa interactiva de landing.html</strong></div>
-            <span style="font-size:10.5px;color:#7C8C80">Los cambios de los campos se muestran aquí antes de guardar</span>
+          <div style="background:#fff;border:1px solid #E3E9DE;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;justify-content:space-between;gap:16px;align-items:end;flex-wrap:wrap"><div><div style="font-size:16px;font-weight:700;color:#16301F">Productos en descuento</div><div style="font-size:12px;color:#7C8C80;margin-top:3px">Selecciona todos los productos que necesites; no existe un límite.</div></div><label style="font-size:11px;font-weight:700;color:#55655B">Descuento %<input type="number" min="1" max="90" value="{{ discountPercent }}" onChange="{{ e => changeLanding('discountPercent', e) }}" style="display:block;width:86px;height:38px;margin-top:5px;border:1px solid #DCE4D6;border-radius:9px;padding:0 10px" /></label></div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:9px"><sc-for list="{{ discountProducts }}" as="p"><label style="display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #E3E9DE;border-radius:11px;cursor:pointer"><input type="checkbox" checked="{{ p.checked }}" onChange="{{ p.toggle }}" /><img src="{{ p.imagen }}" style="width:42px;height:42px;object-fit:contain" /><span style="min-width:0;display:flex;flex-direction:column"><b style="font-size:11px;color:#16301F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.nombre_producto }}</b><span style="font-size:10px;color:#1F7A3D">Bs {{ p.price }}</span></span></label></sc-for></div>
           </div>
-          <iframe id="landingPreviewFrame" src="./landing.html" title="Vista previa de la landing page" onLoad="{{ loadLandingPreview }}" style="display:block;width:100%;height:760px;border:0;background:#FFFFFF"></iframe>
+
+          <div style="background:#12301F;color:#fff;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:14px">
+            <div><div style="font-size:16px;font-weight:700">Redes sociales</div><div style="font-size:12px;color:#AFC3B4;margin-top:3px">Pega una URL y se creará automáticamente un icono al final de la landing.</div></div>
+            <div style="display:flex;gap:9px;flex-wrap:wrap"><input value="{{ socialUrl }}" onInput="{{ onSocialUrl }}" placeholder="https://instagram.com/usuario" style="height:40px;min-width:min(100%,360px);flex:1;border:1px solid #31543A;border-radius:9px;padding:0 11px;background:#193C27;color:#fff" /><button onClick="{{ addSocial }}" style="height:40px;padding:0 16px;border:0;border-radius:9px;background:#A6CE39;color:#12301F;font-size:12px;font-weight:700;cursor:pointer">Agregar red</button></div>
+            <sc-if value="{{ socialError }}"><div style="font-size:11px;color:#FFD0D0">{{ socialError }}</div></sc-if>
+            <div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{ socialRows }}" as="r"><div style="display:flex;align-items:center;gap:10px;padding:10px 11px;border:1px solid #31543A;border-radius:10px"><span style="width:32px;height:32px;display:grid;place-items:center;flex:0 0 auto;border-radius:50%;background:#1F7A3D;font-size:11px;font-weight:700">{{ r.icon }}</span><div style="min-width:0;flex:1"><b style="display:block;margin-bottom:4px;font-size:11px">{{ r.name }}</b><input value="{{ r.url }}" onChange="{{ r.change }}" aria-label="URL de {{ r.name }}" style="width:100%;height:30px;border:1px solid #31543A;border-radius:7px;padding:0 8px;background:#193C27;color:#C5D5C9;font-size:10px" /></div><button onClick="{{ r.remove }}" style="height:30px;padding:0 10px;border:1px solid #6D4949;border-radius:7px;background:transparent;color:#FFD0D0;font-size:10px;cursor:pointer">Eliminar</button></div></sc-for></div>
+          </div>
+
+          <div style="display:flex;gap:9px;justify-content:flex-end;flex-wrap:wrap"><button onClick="{{ saveLanding }}" style="height:42px;padding:0 18px;border:0;border-radius:10px;background:#1F7A3D;color:#fff;font-weight:700;cursor:pointer">Guardar y publicar</button><button onClick="{{ openLanding }}" style="height:42px;padding:0 18px;border:1px solid #DCE4D6;border-radius:10px;background:#fff;color:#55655B;font-weight:700;cursor:pointer">Ver landing ↗</button></div>
         </div>
       </sc-if>
 
@@ -1068,7 +1061,17 @@ const ESTADO = ['ACTIVO', 'INACTIVO'];
 const FORMAS = ['Efectivo', 'QR Simple', 'Transferencia', 'Tarjeta'];
 const USUARIOS = ['prueba123', 'M. Gutiérrez', 'A. Peña'];
 const HOY = '2026-07-29';
-const LANDING_DEFAULTS = { eyebrow: 'Bienestar natural', title: 'Cuida de ti, todos los días.', description: 'Suplementos, colágenos y plantas seleccionadas para acompañar tu rutina.', discountIds: [3, 5, 8], discountPercent: 15, featuredCategories: [1, 2, 3] };
+const LANDING_DEFAULTS = {
+  discountIds: [3, 5, 8], discountPercent: 15,
+  banners: ['uploads/Anuncio1.jpg', 'uploads/Anuncio2.jpg', 'uploads/Anuncio3.jpg'],
+  socials: [
+    { id: 1, url: 'https://www.instagram.com/naturebiosana' },
+    { id: 2, url: 'https://api.whatsapp.com/send/?phone=59162517850&text&type=phone_number&app_absent=0' },
+    { id: 3, url: 'https://www.facebook.com/people/Nature-Bio-Sana-y-Casa-Esot%C3%A9rica-San-Roque/61590408286821/' },
+    { id: 4, url: 'https://www.tiktok.com/@naturebiosana' },
+    { id: 5, url: 'https://www.tiktok.com/@casa.esoterica.sa0' }
+  ]
+};
 const readLandingConfig = () => {
   try { return { ...LANDING_DEFAULTS, ...JSON.parse(localStorage.getItem('natureBioLandingConfig') || '{}') }; }
   catch (e) { return { ...LANDING_DEFAULTS }; }
@@ -1077,7 +1080,7 @@ const readLandingConfig = () => {
 class Component extends DCLogic {
   SEED = {
       tiendas: [
-        { id: 1, codigo_tienda: 'TDA-001', nombre_tienda: 'Tienda 1 · Sucursal Norte', direccion: 'Av. Banzer 3er anillo #240', telefono: '+591 700-11223', estado: 'ACTIVO', habilitada: true },
+        { id: 1, codigo_tienda: 'TDA-001', nombre_tienda: 'Tienda 1 · Sucursal Norte', direccion: 'Av. Banzer 3er anillo #240', telefono: '+591 62517850', estado: 'ACTIVO', habilitada: true },
         { id: 2, codigo_tienda: 'TDA-002', nombre_tienda: 'Tienda 2 · Sucursal Centro', direccion: 'C. Sucre esq. Ayacucho #55', telefono: '+591 700-44556', estado: 'ACTIVO', habilitada: false },
         { id: 3, codigo_tienda: 'TDA-003', nombre_tienda: 'Tienda 3 · Depósito', direccion: 'Parque Industrial mz. 14', telefono: '+591 700-77889', estado: 'INACTIVO', habilitada: false, fecha_registro: '2026-03-02' }
       ],
@@ -1183,7 +1186,7 @@ class Component extends DCLogic {
   state = {
     phase: 'login', loginUser: '', loginPass: '', loginError: '', showPass: false, loading: false, tienda: '',
     mod: 'inicio', sub: 'inicio', query: '', filters: {}, sort: {}, page: {}, dashPeriod: 'dia', dashDate: '2026-07-29', menuActive: false, cartOpen: true,
-    landingConfig: readLandingConfig(),
+    landingConfig: readLandingConfig(), landingSocialUrl: '', landingSocialError: '',
     modalOpen: false, checkoutOpen: false, editingId: null, form: {}, formErrors: {}, formEnt: null,
     verOpen: false, verRows: [], verTitle: '', confirm: null,
     toast: '', toastKind: 'ok',
@@ -1298,14 +1301,14 @@ class Component extends DCLogic {
   }
 
   MODS = {
-    landing: { label: 'Landing workspace', icon: '◆', tabs: [['landingEditor', 'Contenido y promociones']] },
     inicio: { label: 'Parte principal', icon: '◧', tabs: [['inicio', 'Resumen del día']] },
     ventas: { label: 'Venta', icon: '🛒', tabs: [['pos', 'Punto de venta'], ['ventas', 'Ventas registradas'], ['pagos_venta', 'Pagos de venta']] },
     movimientos: { label: 'Movimientos', icon: '▤', tabs: [['caja', 'Caja y movimientos']] },
     catalogo: { label: 'Inventario', icon: '🌿', tabs: [['stock', 'Productos de tienda'], ['productos', 'Producto'], ['categorias', 'Categoría']] },
     usuarios: { label: 'Usuario', icon: '👤', tabs: [['usuarios', 'Usuarios'], ['roles', 'Roles y permisos']] },
     obligaciones: { label: 'Deuda', icon: '📄', tabs: [['deudaResumen', 'Resumen mensual'], ['obligaciones', 'Obligaciones'], ['pagos_obligacion', 'Pagos realizados'], ['acreedores', 'Acreedores']] },
-    tiendas: { label: 'Tienda', icon: '🏬', tabs: [['tiendasCards', 'Tiendas'], ['cajas', 'Cajas']] }
+    tiendas: { label: 'Tienda', icon: '🏬', tabs: [['tiendasCards', 'Tiendas'], ['cajas', 'Cajas']] },
+    landing: { label: 'Landing workspace', icon: '◆', tabs: [['landingEditor', 'Contenido y promociones']] }
   };
 
   ENT = {
@@ -1757,14 +1760,20 @@ class Component extends DCLogic {
       const cfg = s.landingConfig;
       const priceOf = name => { const lot = this.loteFifo(name); return lot ? num(lot.precio_venta_unidad) : 0; };
       const payloadFor = next => ({ ...next, products: d.productos, categories: d.categorias, prices: Object.fromEntries(d.productos.map(p => [p.id, priceOf(p.nombre_producto)])) });
-      const pushPreview = (next, persist = false) => setTimeout(() => { const frame = document.getElementById('landingPreviewFrame'); if (frame && frame.contentWindow) frame.contentWindow.postMessage({ type: 'NATURE_BIO_LANDING_PREVIEW', config: payloadFor(next), persist }, '*'); }, 0);
-      v.landingEyebrow = cfg.eyebrow; v.landingTitle = cfg.title; v.landingDescription = cfg.description; v.discountPercent = cfg.discountPercent;
-      v.changeLanding = (key, e) => { const next = { ...cfg, [key]: e.target.value }; this.setState({ landingConfig: next }); pushPreview(next); };
-      v.discountProducts = d.productos.filter(p => p.estado === 'ACTIVO').map(p => ({ ...p, price: money(priceOf(p.nombre_producto)), checked: cfg.discountIds.includes(p.id), toggle: () => { const ids = cfg.discountIds.includes(p.id) ? cfg.discountIds.filter(id => id !== p.id) : [...cfg.discountIds, p.id]; const next = { ...cfg, discountIds: ids }; this.setState({ landingConfig: next }); pushPreview(next); } }));
-      v.featuredCats = d.categorias.filter(c => c.estado === 'ACTIVO').map(c => ({ ...c, checked: cfg.featuredCategories.includes(c.id), toggle: () => { const ids = cfg.featuredCategories.includes(c.id) ? cfg.featuredCategories.filter(id => id !== c.id) : [...cfg.featuredCategories, c.id]; const next = { ...cfg, featuredCategories: ids }; this.setState({ landingConfig: next }); pushPreview(next); } }));
-      v.saveLanding = () => { try { localStorage.setItem('natureBioLandingConfig', JSON.stringify({ ...cfg, products: d.productos, categories: d.categorias, prices: Object.fromEntries(d.productos.map(p => [p.id, priceOf(p.nombre_producto)])) })); } catch(e) {} this.flash('Landing actualizada y vinculada con el catálogo', 'ok'); };
-      v.saveLanding = () => { try { localStorage.setItem('natureBioLandingConfig', JSON.stringify(payloadFor(cfg))); } catch(e) {} pushPreview(cfg, true); this.flash('Cambios guardados. La landing ya está actualizada.', 'ok'); };
-      v.loadLandingPreview = () => pushPreview(cfg);
+      const updateLanding = next => this.setState({ landingConfig: next });
+      const banners = Array.isArray(cfg.banners) ? cfg.banners.slice(0, 3) : LANDING_DEFAULTS.banners.slice();
+      const socials = Array.isArray(cfg.socials) ? cfg.socials : LANDING_DEFAULTS.socials;
+      const socialMeta = url => { const u = String(url || '').toLowerCase(); if (u.includes('instagram.com')) return ['Instagram', 'IG']; if (u.includes('whatsapp.com') || u.includes('wa.me')) return ['WhatsApp', 'WA']; if (u.includes('facebook.com')) return ['Facebook', 'f']; if (u.includes('tiktok.com')) return ['TikTok', '♪']; if (u.includes('youtube.com') || u.includes('youtu.be')) return ['YouTube', '▶']; if (u.includes('x.com') || u.includes('twitter.com')) return ['X / Twitter', 'X']; return ['Red social', '●']; };
+      v.discountPercent = cfg.discountPercent;
+      v.changeLanding = (key, e) => this.setState({ landingConfig: { ...cfg, [key]: e.target.value } });
+      v.discountProducts = d.productos.filter(p => p.estado === 'ACTIVO').map(p => ({ ...p, price: money(priceOf(p.nombre_producto)), checked: cfg.discountIds.includes(p.id), toggle: () => { const ids = cfg.discountIds.includes(p.id) ? cfg.discountIds.filter(id => id !== p.id) : [...cfg.discountIds, p.id]; this.setState({ landingConfig: { ...cfg, discountIds: ids } }); } }));
+      v.bannerRows = banners.map((src, index) => ({ src, change: e => { const list = banners.slice(); list[index] = e.target.value; updateLanding({ ...cfg, banners: list }); }, remove: () => { const list = banners.filter((_, i) => i !== index); updateLanding({ ...cfg, banners: list }); }, upload: e => { const file = e.target.files && e.target.files[0]; if (!file) return; if (file.size > 1500000) return this.flash('La imagen debe pesar menos de 1,5 MB', 'warn'); const reader = new FileReader(); reader.onload = () => { const list = banners.slice(); list[index] = reader.result; updateLanding({ ...cfg, banners: list }); }; reader.readAsDataURL(file); } }));
+      v.bannerLimit = banners.length >= 3; v.noBanners = banners.length === 0; v.bannerAddOpacity = banners.length >= 3 ? .45 : 1;
+      v.addBanner = () => { if (banners.length >= 3) return this.flash('Solo se permiten 3 anuncios', 'warn'); updateLanding({ ...cfg, banners: [...banners, 'uploads/Anuncio1.jpg'] }); };
+      v.socialUrl = s.landingSocialUrl; v.socialError = s.landingSocialError; v.onSocialUrl = e => this.setState({ landingSocialUrl: e.target.value, landingSocialError: '' });
+      v.socialRows = socials.map((r, index) => { const meta = socialMeta(r.url); return { ...r, name: meta[0], icon: meta[1], change: e => { const list = socials.map((item, i) => i === index ? { ...item, url: e.target.value } : item); updateLanding({ ...cfg, socials: list }); }, remove: () => updateLanding({ ...cfg, socials: socials.filter((_, i) => i !== index) }) }; });
+      v.addSocial = () => { const raw = String(this.state.landingSocialUrl || '').trim(); let parsed; try { parsed = new URL(raw); } catch (e) { return this.setState({ landingSocialError: 'Ingresa una URL completa y válida, por ejemplo https://instagram.com/usuario' }); } if (!['http:', 'https:'].includes(parsed.protocol)) return this.setState({ landingSocialError: 'La URL debe comenzar con http:// o https://' }); if (socials.some(r => r.url === raw)) return this.setState({ landingSocialError: 'Esta red social ya fue agregada.' }); updateLanding({ ...cfg, socials: [...socials, { id: Date.now(), url: raw }] }); this.setState({ landingSocialUrl: '', landingSocialError: '' }); };
+      v.saveLanding = () => { try { localStorage.setItem('natureBioLandingConfig', JSON.stringify(payloadFor(cfg))); this.flash('Cambios guardados. La landing ya está actualizada.', 'ok'); } catch(e) { this.flash('No se pudo guardar. Reduce el peso de las imágenes de anuncios.', 'warn'); } };
       v.openLanding = () => window.open('./landing.html', '_blank');
     }
     v.showPageHeading = false;
